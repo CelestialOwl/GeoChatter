@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-const WorkScreen = ({ navigation, route }) => {
-  const { itemId, other } = route.params;
+const WorkScreen = ({ navigation }) => {
+  // const { itemId, other } = route.params;
   return (
     <View>
       <Text style={styles.text}>Working...</Text>
-      <Text style={styles.text}>{JSON.stringify(itemId)}</Text>
-      <Text style={styles.text}>{other}</Text>
+      {/* <Text style={styles.text}>{JSON.stringify(itemId)}</Text>
+      <Text style={styles.text}>{other}</Text> */}
       <Button title="Go back" onPress={() => navigation.navigate("Home")} />
     </View>
   );

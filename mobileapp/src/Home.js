@@ -7,12 +7,7 @@ const HomeScreen = ({ navigation }) => {
       <Text style={styles.text}>Nice Coochies</Text>
       <Button
         title="Go to Office"
-        onPress={() =>
-          navigation.navigate("Work", {
-            itemId: 86,
-            other: "Great Job",
-          })
-        }
+        onPress={() => navigation.navigate("Work")}
       />
     </View>
   );
