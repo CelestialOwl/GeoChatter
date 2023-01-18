@@ -1,27 +1,32 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import { StyleSheet, View, TouchableOpacity, SafeAreaView } from "react-native";
+import React, { useContext, useEffect } from "react";
 import AuthForm from "../components/AuthForm";
 import Navlink from "../components/Navlink";
 import { Context } from "../context/AuthContext";
+import AndroidSafeArea from "../components/SafeArea";
 
 const SigninScreen = ({ navigation }) => {
   const { signin, state, clearErrorMessage } = useContext(Context);
-  console.log(state, "the state");
+  useEffect(() => {
+    navigation.navigate("account");
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <AuthForm
-        headerText="Sign in to your accout"
-        errorMessage={state.errorMessage}
-        onSubmitButtonText="Sign In"
-        onSubmit={signin}
-      />
-      <Navlink
-        navigation={navigation}
-        text="Don't have an account? Sign up instead"
-        routName="signup"
-      />
-    </View>
+    <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>
+      <View style={styles.container}>
+        <AuthForm
+          headerText="Sign in to your accout"
+          errorMessage={state.errorMessage}
+          onSubmitButtonText="Sign In"
+          onSubmit={signin}
+        />
+        <Navlink
+          navigation={navigation}
+          text="Don't have an account? Sign up instead"
+          routName="signup"
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

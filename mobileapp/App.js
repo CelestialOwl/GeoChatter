@@ -13,6 +13,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { navigationRef } from "./src/NavigationRef";
 import "react-native-gesture-handler";
+import { FontAwesome } from "@expo/vector-icons";
 
 const DrawerUserPreferences = createDrawerNavigator();
 const TabDashboard = createBottomTabNavigator();
@@ -22,16 +23,39 @@ const StackNew = createStackNavigator();
 
 function TabDashboardScreen() {
   return (
-    <TabDashboard.Navigator>
+    <TabDashboard.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Dashboard") {
+            iconName = focused ? "signal" : "gear";
+          }
+          return <FontAwesome name={iconName} size={25} />;
+        },
+      })}
+    >
       <TabDashboard.Screen name="Dashboard" component={DashboardScreen} />
       <TabUserProfile.Screen name="profile" component={UserProfileScreen} />
+      <TabUserProfile.Screen
+        name="preferences"
+        component={DrawserUserPreferencesScreen}
+      />
     </TabDashboard.Navigator>
   );
 }
 function DrawserUserPreferencesScreen() {
   return (
     <DrawerUserPreferences.Navigator>
-      <DrawerUserPreferences.Screen name="preferences" />
+      <DrawerUserPreferences.Screen
+        name="preference"
+        component={UserPreferences}
+      />
+      <DrawerUserPreferences.Screen
+        name="accountsetting"
+        component={AccountScreen}
+      />
     </DrawerUserPreferences.Navigator>
   );
 }

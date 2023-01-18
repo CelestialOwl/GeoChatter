@@ -14,7 +14,6 @@ const AccountScreen = () => {
       email: email,
       password: password,
     });
-    console.log(email, password);
   };
 
   useEffect(() => {
