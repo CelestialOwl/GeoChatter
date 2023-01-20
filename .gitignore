@@ -1,5 +1,5 @@
 /node_modules
-/backend/node_modules
+/server/node_modules
 /mobileapp/node_modules
 /webapp/node_modules
 /mobileapp/.expo
