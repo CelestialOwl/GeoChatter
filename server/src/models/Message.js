@@ -2,9 +2,12 @@ import mongoose from "mongoose";
 import moment from "moment";
 
 const messageSchema = new mongoose.Schema({
-  body: {
+  text: {
     type: String,
     require: true,
+  },
+  username: {
+    type: String,
   },
   time: {
     type: String,

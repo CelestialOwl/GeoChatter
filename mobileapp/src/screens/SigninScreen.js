@@ -7,9 +7,9 @@ import AndroidSafeArea from "../components/SafeArea";
 
 const SigninScreen = ({ navigation }) => {
   const { signin, state, clearErrorMessage } = useContext(Context);
-  useEffect(() => {
-    navigation.navigate("account");
-  }, []);
+  // useEffect(() => {
+  //   navigation.navigate("account");
+  // }, []);
 
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>

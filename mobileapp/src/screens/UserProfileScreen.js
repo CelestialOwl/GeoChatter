@@ -1,11 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
+import AndroidSafeArea from "../components/SafeArea";
+import { SafeAreaView } from "react-native";
 import React from "react";
 
 const UserProfileScreen = () => {
   return (
-    <View>
-      <Text>UserProfileScreen</Text>
-    </View>
+    <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>
+      <View>
+        <Text>UserProfileScreen</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 

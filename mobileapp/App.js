@@ -14,6 +14,7 @@ import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { navigationRef } from "./src/NavigationRef";
 import "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
+import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
 
 const DrawerUserPreferences = createDrawerNavigator();
 const TabDashboard = createBottomTabNavigator();
@@ -64,7 +65,11 @@ export default function App() {
   return (
     <AuthProvider>
       <NavigationContainer ref={navigationRef}>
-        <StackNew.Navigator screenOptions={{ headerShown: false }}>
+        <StackNew.Navigator
+          initialRouteName="localsignin"
+          screenOptions={{ headerShown: false }}
+        >
+          <StackNew.Screen name="localsignin" component={ResolveAuthScreen} />
           <StackNew.Screen name="signin" component={SigninScreen} />
           <StackNew.Screen name="signup" component={SignupScreen} />
           <StackNew.Screen name="account" component={TabDashboardScreen} />

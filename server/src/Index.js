@@ -3,9 +3,11 @@ import authRoutes from "./routes/authRoutes.js";
 import trackRoutes from "./routes/trackRoutes.js";
 import bodyParser from "body-parser";
 import requireAuth from "../src/middlewares/requireAuth.js";
+import messageRoutes from "./routes/messageRoutes.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import formatMessage from "./utils/messages.js";
+import Users from "./models/Users.js";
 import {
   getRoomUsers,
   getCurrentUser,
@@ -27,20 +29,28 @@ export const io = new Server(httpserver, {
 let botName = "twitch";
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log("A user connected", socket.id);
 
-  socket.on("joinRoom", ({ username, room }) => {
-    const user = userJoin(socket.id, username, room);
+  socket.on("joinRoom", async ({ username, room, email }) => {
+    const myUser = await Users.findOne({ email: email });
+    const user = userJoin(socket.id, username, room, myUser._id);
 
     socket.join(user.room);
 
     // Welcome current user
-    socket.emit("message", formatMessage(botName, "Welcome to ChatCord!"));
+    socket.emit(
+      "message",
+      formatMessage(botName, "Welcome to ChatCord!", myUser._id)
+    );
 
     // Broadcast when a user connects
     socket.broadcast.emit(
       "message",
-      formatMessage(botName, `${user.username} has joined the chat`)
+      formatMessage(
+        botName,
+        `${user.username || "kappa"} has joined the chat`,
+        myUser._id
+      )
     );
 
     // Send users and room info
@@ -51,16 +61,25 @@ io.on("connection", (socket) => {
   });
 
   // Listen for chatMessage
-  socket.on("chatMessage", async (msg) => {
-    try {
-      Message.insertMany([formatMessage(msg)], (err) => console.log(err));
-    } catch (err) {
-      console.log("Error with saving the message");
-    }
+  socket.on("chatMessage", (msg) => {
     console.log(msg);
     const user = getCurrentUser(socket.id);
+    if (user) {
+      try {
+        Message.insertMany(
+          [formatMessage(user.username, msg, user.userId)],
+          (err) => {
+            if (err === null) {
+              console.log("record inserted");
+            }
+          }
+        );
+      } catch (err) {
+        console.log("Error with saving the message");
+      }
+    }
 
-    socket.broadcast.emit("message", formatMessage(user.username, msg));
+    io.emit("message", formatMessage(user.username, msg, user.userId));
 
     // io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
@@ -87,6 +106,7 @@ io.on("connection", (socket) => {
 app.use(bodyParser.json());
 app.use(authRoutes);
 app.use(trackRoutes);
+app.use(messageRoutes);
 
 app.get("/", requireAuth, (req, res) => {
   res.send(`Your email: ${req.user.email}`);
@@ -95,10 +115,7 @@ app.get("/", requireAuth, (req, res) => {
 mongoose.set("strictQuery", false);
 const mongoUri =
   "mongodb+srv://Hassan:Dontfeelblue23@cluster0.ojoja.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-mongoose
-  .connect(mongoUri, { useNewUrlParser: true })
-  .then((data) => console.log("connected"))
-  .catch((err) => console.log(err));
+mongoose.connect(mongoUri, { useNewUrlParser: true });
 
 mongoose.connection.on("connected", () => {
   console.log("connected to mongoose instance");
