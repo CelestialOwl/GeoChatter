@@ -32,32 +32,34 @@ io.on("connection", (socket) => {
   console.log("A user connected", socket.id);
 
   socket.on("joinRoom", async ({ username, room, email }) => {
+    console.log("email", email);
     const myUser = await Users.findOne({ email: email });
+    console.log("user", myUser);
     const user = userJoin(socket.id, username, room, myUser._id);
 
     socket.join(user.room);
 
     // Welcome current user
-    socket.emit(
-      "message",
-      formatMessage(botName, "Welcome to ChatCord!", myUser._id)
-    );
+    // socket.emit(
+    //   "message",
+    //   formatMessage(botName, "Welcome to ChatCord!", myUser._id)
+    // );
 
-    // Broadcast when a user connects
-    socket.broadcast.emit(
-      "message",
-      formatMessage(
-        botName,
-        `${user.username || "kappa"} has joined the chat`,
-        myUser._id
-      )
-    );
+    // // Broadcast when a user connects
+    // socket.broadcast.emit(
+    //   "message",
+    //   formatMessage(
+    //     botName,
+    //     `${user.username || "kappa"} has joined the chat`,
+    //     myUser._id
+    //   )
+    // );
 
-    // Send users and room info
-    io.to(user.room).emit("roomUsers", {
-      room: user.room,
-      users: getRoomUsers(user.room),
-    });
+    // // Send users and room info
+    // io.to(user.room).emit("roomUsers", {
+    //   room: user.room,
+    //   users: getRoomUsers(user.room),
+    // });
   });
 
   // Listen for chatMessage
@@ -85,22 +87,22 @@ io.on("connection", (socket) => {
   });
 
   // Runs when client disconnects
-  socket.on("disconnect", () => {
-    const user = userLeave(socket.id);
+  // socket.on("disconnect", () => {
+  //   const user = userLeave(socket.id);
 
-    if (user) {
-      io.to(user.room).emit(
-        "message",
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
+  //   if (user) {
+  //     io.to(user.room).emit(
+  //       "message",
+  //       formatMessage(botName, `${user.username} has left the chat`)
+  //     );
 
-      // Send users and room info
-      io.to(user.room).emit("roomUsers", {
-        room: user.room,
-        users: getRoomUsers(user.room),
-      });
-    }
-  });
+  //     // Send users and room info
+  //     io.to(user.room).emit("roomUsers", {
+  //       room: user.room,
+  //       users: getRoomUsers(user.room),
+  //     });
+  //   }
+  // });
 });
 
 app.use(bodyParser.json());
@@ -113,8 +115,9 @@ app.get("/", requireAuth, (req, res) => {
 });
 
 mongoose.set("strictQuery", false);
-const mongoUri =
-  "mongodb+srv://Hassan:Dontfeelblue23@cluster0.ojoja.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const mongoUri =
+//   "mongodb+srv://Hassan:Dontfeelblue23@cluster0.ojoja.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongoUri = "mongodb://localhost:27017/GeoChatter";
 mongoose.connect(mongoUri, { useNewUrlParser: true });
 
 mongoose.connection.on("connected", () => {

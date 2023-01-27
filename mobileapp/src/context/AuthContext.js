@@ -38,9 +38,11 @@ const signup =
   async ({ email, password }) => {
     try {
       const response = await ChatterAPI.post("/signup", { email, password });
+      console.log(response.data);
       await AsyncStorage.setItem("token", response.data);
+      await AsyncStorage.setItem("email", email);
       dispatch({ type: "signin", payload: response.data });
-      navigate("account");
+      RootNavigation.navigate("account");
     } catch (err) {
       dispatch({
         type: "add_error",
@@ -84,9 +86,10 @@ const signin =
   };
 
 const signout = (dispatch) => async () => {
-  await AsyncStorage.removeItem("token");
+  console.log("Here");
+  await AsyncStorage.clear();
   dispatch({ type: "signout" });
-  navigate("signin");
+  RootNavigation.navigate("signin");
 };
 
 export const { Provider, Context } = createDataContext(

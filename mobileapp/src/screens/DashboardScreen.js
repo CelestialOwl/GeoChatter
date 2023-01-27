@@ -2,14 +2,14 @@ import { StyleSheet, View, ScrollView, Text } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import AndroidSafeArea from "../components/SafeArea";
 import { SafeAreaView } from "react-native";
-import { Button, Input, ListItem } from "react-native-elements";
+import { Button, Input, ListItem, Avatar } from "react-native-elements";
 import { io } from "socket.io-client";
 import ChatterAPI from "../API/ChatterAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 
-const socket = io("https://afdd-182-178-154-206.in.ngrok.io");
+const socket = io("https://95f9-182-185-209-164.in.ngrok.io");
 const DashboardScreen = () => {
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
@@ -33,10 +33,6 @@ const DashboardScreen = () => {
     if (ListRef) {
       ListRef.current.scrollToEnd({ animated: false });
     }
-    // async function kappa() {
-    //   await AsyncStorage.removeItem("token");
-    // }
-    // kappa();
   }, [messages]);
 
   useEffect(() => {
@@ -58,16 +54,17 @@ const DashboardScreen = () => {
       // console.log(users, room);
     });
     socket.on("message", (msg) => {
-      console.log(msg);
       setMessages((prevState) => [
         ...prevState,
-        { id: messages.length + 1, text: msg.text, time: msg.time },
+        { id: msg.userId, text: msg.text, time: msg.time },
       ]);
     });
     fetchMessagesHistory();
     return () => console.log("stoped");
   }, [socket]);
+
   function onMessageSubmit(e) {
+    console.log(socket.id);
     setField("");
     socket.emit("chatMessage", field);
   }
@@ -87,10 +84,24 @@ const DashboardScreen = () => {
             <ScrollView ref={ListRef}>
               {messages.map((l, i) => (
                 <ListItem key={i}>
-                  <Text>{l.time}</Text>
-                  <ListItem.Content>
-                    <ListItem.Title>{l.text}</ListItem.Title>
-                  </ListItem.Content>
+                  <View style={{ flex: 1 }}>
+                    <View>
+                      <Avatar
+                        rounded
+                        source={{
+                          uri: "https://randomuser.me/api/portraits/men/36.jpg",
+                        }}
+                      />
+                    </View>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <Text>{l.time}</Text>
+                      <ListItem.Content>
+                        <ListItem.Title style={{ marginLeft: 10 }}>
+                          {l.text}
+                        </ListItem.Title>
+                      </ListItem.Content>
+                    </View>
+                  </View>
                 </ListItem>
               ))}
             </ScrollView>

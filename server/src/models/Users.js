@@ -1,5 +1,18 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+
+const locationSchema = new mongoose.Schema({
+  timeStamp: Number,
+  coords: {
+    latitude: Number,
+    longitude: Number,
+    altitude: Number,
+    accuracy: Number,
+    heading: Number,
+    speed: Number,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -10,6 +23,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location: locationSchema,
 });
 
 userSchema.pre("save", function (next) {
