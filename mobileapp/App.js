@@ -15,6 +15,8 @@ import { navigationRef } from "./src/NavigationRef";
 import "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
+import ChatListScreen from "./src/screens/ChatListScreen";
+import { useFonts } from "expo-font";
 
 const DrawerUserPreferences = createDrawerNavigator();
 const TabDashboard = createBottomTabNavigator();
@@ -25,6 +27,7 @@ const StackNew = createStackNavigator();
 function TabDashboardScreen() {
   return (
     <TabDashboard.Navigator
+      initialRouteName="chats"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -39,6 +42,7 @@ function TabDashboardScreen() {
     >
       <TabDashboard.Screen name="Dashboard" component={DashboardScreen} />
       <TabUserProfile.Screen name="profile" component={UserProfileScreen} />
+      <TabUserProfile.Screen name="chats" component={ChatListScreen} />
       <TabUserProfile.Screen
         name="preferences"
         component={DrawserUserPreferencesScreen}
@@ -62,6 +66,16 @@ function DrawserUserPreferencesScreen() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    MontserratRegular: require("./src/assets/fonts/Montserrat-Regular.otf"),
+    MontserratLight: require("./src/assets/fonts/Montserrat-Light.otf"),
+    MontserratSemiBold: require("./src/assets/fonts/Montserrat-SemiBold.otf"),
+    MontserratBold: require("./src/assets/fonts/Montserrat-Bold.otf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <AuthProvider>
       <NavigationContainer ref={navigationRef}>

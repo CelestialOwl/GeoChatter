@@ -49,10 +49,10 @@ const UserProfileScreen = () => {
         <Text style={styles.paragraph}>{text}</Text>
         <MapView
           initialRegion={{
-            latitude: 31.47,
-            longitude: 74.34,
-            latitudeDelta: 0.09,
-            longitudeDelta: 0.05,
+            latitude: 31.4474177,
+            longitude: 74.3918821,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
           }}
           style={styles.map}
         />

@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import AndroidSafeArea from "../components/SafeArea";
 import { SafeAreaView } from "react-native";
@@ -8,8 +8,9 @@ import ChatterAPI from "../API/ChatterAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
+import Sidra from "../assets/sidra.jpg";
 
-const socket = io("https://95f9-182-185-209-164.in.ngrok.io");
+const socket = io("https://c395-182-185-213-143.in.ngrok.io");
 const DashboardScreen = () => {
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
@@ -76,6 +77,10 @@ const DashboardScreen = () => {
         keyboardVerticalOffset={50}
       >
         <View style={styles.container}>
+          <View style={styles.card}>
+            <Image source={Sidra} style={styles.iconImage} />
+            <Text style={styles.name}>{"Sarah"}</Text>
+          </View>
           <View
             style={{
               flex: 1,
@@ -136,5 +141,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: 30,
+    // marginBottom: 50,
+    paddingBottom: 10,
+  },
+  name: {
+    paddingVertical: 12,
+    marginLeft: 7,
+    fontSize: 20,
+  },
+  iconImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    resizeMode: "cover",
   },
 });

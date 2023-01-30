@@ -1,50 +1,59 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState, useEffect } from "react";
+import { Button, Image, View, Platform, StyleSheet } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import Chatterapi from "../API/ChatterAPI";
 
 const AccountScreen = () => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-  const fetchUserData = async () => {
-    const email = await AsyncStorage.getItem("email");
-    const password = await AsyncStorage.getItem("password");
-    setData({
-      email: email,
-      password: password,
-    });
-  };
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
-    // fetchUserData();
-  }, []);
+    console.log("hello");
+    if (image !== null) {
+      console.log(image.uri);
+      async function sendData() {
+        const formData = new FormData();
+        formData.append("image", {
+          name: new Date() + "_profile",
+          uri: image,
+          type: "image/jpg",
+        });
+        const response = await Chatterapi.post("/edit-profile", formData, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(response.data);
+      }
+      sendData();
+    }
+  }, [image]);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 8],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      console.log(result);
+      setImage(result.assets[0].uri);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <Text
-          style={{
-            alignSelf: "center",
-          }}
-        >
-          User Email:
-        </Text>
-        <Text style={{ fontSize: 40, fontWeight: "bold", marginLeft: 20 }}>
-          123213
-        </Text>
-      </View>
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <Text
-          style={{
-            alignSelf: "center",
-          }}
-        >
-          User Password:
-        </Text>
-        <Text style={{ fontSize: 40, fontWeight: "bold", marginLeft: 20 }}>
-          213213
-        </Text>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Button title="Pick an image from camera roll" onPress={pickImage} />
+        {image && (
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        )}
       </View>
     </View>
   );

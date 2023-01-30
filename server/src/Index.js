@@ -8,6 +8,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import formatMessage from "./utils/messages.js";
 import Users from "./models/Users.js";
+import userRoutes from "./routes/userRoutes.js";
 import {
   getRoomUsers,
   getCurrentUser,
@@ -16,7 +17,9 @@ import {
 } from "./utils/users.js";
 import mongoose from "mongoose";
 import Message from "./models/Message.js";
+import * as dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 const httpserver = createServer(app);
 export const io = new Server(httpserver, {
@@ -35,7 +38,7 @@ io.on("connection", (socket) => {
     console.log("email", email);
     const myUser = await Users.findOne({ email: email });
     console.log("user", myUser);
-    const user = userJoin(socket.id, username, room, myUser._id);
+    const user = userJoin(socket.id, username, room, myUser._id || "default");
 
     socket.join(user.room);
 
@@ -105,19 +108,19 @@ io.on("connection", (socket) => {
   // });
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(authRoutes);
 app.use(trackRoutes);
 app.use(messageRoutes);
+app.use(userRoutes);
 
 app.get("/", requireAuth, (req, res) => {
   res.send(`Your email: ${req.user.email}`);
 });
 
 mongoose.set("strictQuery", false);
-// const mongoUri =
-//   "mongodb+srv://Hassan:Dontfeelblue23@cluster0.ojoja.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const mongoUri = "mongodb://localhost:27017/GeoChatter";
+const mongoUri = process.env.MONGO_LOCAL_URL;
 mongoose.connect(mongoUri, { useNewUrlParser: true });
 
 mongoose.connection.on("connected", () => {
