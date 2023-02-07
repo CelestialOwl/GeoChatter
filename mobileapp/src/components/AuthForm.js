@@ -8,9 +8,11 @@ const AuthForm = ({
   errorMessage,
   onSubmit,
   onSubmitButtonText,
+  parentElem,
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   return (
     <>
       <Spacer>
@@ -30,13 +32,21 @@ const AuthForm = ({
         onChangeText={setPassword}
         autoCorrect={false}
       />
+      {parentElem !== null && parentElem !== undefined ? (
+        <Input
+          value={username}
+          onChangeText={setUsername}
+          label="UserName"
+          autoCorrect={false}
+        />
+      ) : null}
       {errorMessage ? (
         <Text style={styles.errorMessage}> {errorMessage}</Text>
       ) : null}
       <Spacer>
         <Button
           title={onSubmitButtonText}
-          onPress={() => onSubmit({ email, password })}
+          onPress={() => onSubmit({ email, password, username })}
         />
       </Spacer>
     </>

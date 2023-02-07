@@ -6,38 +6,62 @@ import {
   StatusBar,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AndroidsafeArea from "../components/SafeArea";
 import { Avatar, Text, Card, Image as EImage } from "react-native-elements";
 import staticImage from "../assets/sarah.jpg";
 import Sidra from "../assets/sidra.jpg";
+import ChatterApi from "../API/ChatterAPI.js";
 const ChatListScreen = () => {
+  const [userList, setUserList] = useState(null);
+  const fetchUserList = async () => {
+    const response = await ChatterApi.get("/users-list");
+    setUserList(response.data.userList);
+  };
+
+  const startChat = async (id) => {
+    const response = await ChatterApi.post("/create-room", {
+      recepient: id,
+    });
+
+    console.log(response);
+  };
+
+  useEffect(() => {
+    fetchUserList();
+  }, []);
   return (
     <SafeAreaView style={AndroidsafeArea.AndroidSafeArea}>
       <View style={styles.container}>
-        <View style={styles.card}>
-          <Image source={Sidra} style={styles.iconImage} />
-          <Text style={styles.name}>{"Sarah"}</Text>
-        </View>
-        <Text>ChatListScreen</Text>
-        <View style={styles.inner}>
-          <View
-            style={{
-              backgroundColor: "yellow",
-              width: "60%",
-              height: "100%",
-              zIndex: 3,
-            }}
-          ></View>
-          <View
-            style={{
-              backgroundColor: "red",
-              width: "50%",
-              height: "100%",
-              zIndex: 100,
-            }}
-          ></View>
-        </View>
+        <Text h2 style={{ marginLeft: 20 }}>
+          All Chats
+        </Text>
+        {userList !== null
+          ? userList.map((user) => (
+              <View
+                onTouchEnd={() => startChat(user._id)}
+                key={user._id}
+                style={styles.card}
+              >
+                <Avatar
+                  containerStyle={{
+                    borderColor: "black",
+                    borderWidth: 2,
+                  }}
+                  rounded
+                  title={"SA"}
+                  titleStyle={{ color: "black", fontSize: 20 }}
+                  onPress={() => console.log("clicked")}
+                  onLongPress={() => console.log("long")}
+                />
+                {/* <Image
+                  source={require("../assets/sarah.jpg")}
+                  style={styles.iconImage}
+                /> */}
+                <Text style={styles.name}>{user.username}</Text>
+              </View>
+            ))
+          : null}
       </View>
     </SafeAreaView>
   );
@@ -47,17 +71,8 @@ export default ChatListScreen;
 
 const styles = StyleSheet.create({
   name: {
-    paddingVertical: 12,
     marginLeft: 7,
     fontSize: 20,
-  },
-  inner: {
-    flex: 0.2,
-    borderWidth: 2,
-    borderColor: "black",
-    borderStyle: "solid",
-    display: "flex",
-    flexDirection: "row",
   },
   container: {
     flex: 1,
@@ -78,5 +93,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     marginLeft: 30,
+    marginVertical: 10,
   },
 });

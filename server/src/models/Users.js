@@ -12,6 +12,14 @@ const locationSchema = new mongoose.Schema({
     speed: Number,
   },
 });
+const hobbySchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  selected: {
+    type: Boolean,
+  },
+});
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -27,18 +35,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  firstname: {
+  username: {
     type: String,
-    required: true,
-  },
-  lastname: {
-    type: String,
-    required: true,
   },
   lastonline: {
     type: String,
   },
+  phone: {
+    type: String,
+  },
   location: locationSchema,
+  hobbies: [hobbySchema],
 });
 
 userSchema.pre("save", function (next) {

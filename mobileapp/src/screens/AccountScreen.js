@@ -8,9 +8,7 @@ const AccountScreen = () => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    console.log("hello");
     if (image !== null) {
-      console.log(image.uri);
       async function sendData() {
         const formData = new FormData();
         formData.append("image", {
@@ -24,7 +22,6 @@ const AccountScreen = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(response.data);
       }
       sendData();
     }
@@ -39,10 +36,7 @@ const AccountScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      console.log(result);
       setImage(result.assets[0].uri);
     }
   };

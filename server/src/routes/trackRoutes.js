@@ -15,7 +15,6 @@ router.get("/tracks", async (req, res) => {
 
 router.post("/save-location", async (req, res) => {
   const { location, email } = req.body;
-  console.log(location, email);
   res.status(200).send({ ok: "ok" });
 
   if (!location) {
@@ -27,7 +26,6 @@ router.post("/save-location", async (req, res) => {
       { location: location },
       { new: true }
     );
-    console.log(doc);
     // res.send(track);
   } catch (err) {
     res.status(422).send({ error: err.message });

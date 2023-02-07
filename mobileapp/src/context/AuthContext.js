@@ -35,9 +35,13 @@ const clearErrorMessage = (dispatch) => () => {
 
 const signup =
   (dispatch) =>
-  async ({ email, password }) => {
+  async ({ email, password, username }) => {
     try {
-      const response = await ChatterAPI.post("/signup", { email, password });
+      const response = await ChatterAPI.post("/signup", {
+        email,
+        password,
+        username,
+      });
       console.log(response.data);
       await AsyncStorage.setItem("token", response.data);
       await AsyncStorage.setItem("email", email);

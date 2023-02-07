@@ -9,6 +9,8 @@ import { Server } from "socket.io";
 import formatMessage from "./utils/messages.js";
 import Users from "./models/Users.js";
 import userRoutes from "./routes/userRoutes.js";
+import Hobby from "./models/Hobby.js";
+import markLastSeen from "./middlewares/markLastSeen.js";
 import {
   getRoomUsers,
   getCurrentUser,
@@ -35,9 +37,7 @@ io.on("connection", (socket) => {
   console.log("A user connected", socket.id);
 
   socket.on("joinRoom", async ({ username, room, email }) => {
-    console.log("email", email);
     const myUser = await Users.findOne({ email: email });
-    console.log("user", myUser);
     const user = userJoin(socket.id, username, room, myUser._id || "default");
 
     socket.join(user.room);
@@ -115,7 +115,20 @@ app.use(trackRoutes);
 app.use(messageRoutes);
 app.use(userRoutes);
 
-app.get("/", requireAuth, (req, res) => {
+// const arr = [
+//   { name: "Cricket" },
+//   { name: "Football" },
+//   { name: "Tennis" },
+//   { name: "Relationship" },
+//   { name: "Esports" },
+// ];
+
+// Hobby.insertMany(arr, (err, docs) => {
+//   console.log("errors", err);
+//   console.log("docs", docs);
+// });
+
+app.get("/", requireAuth, markLastSeen, (req, res) => {
   res.send(`Your email: ${req.user.email}`);
 });
 
@@ -132,5 +145,5 @@ mongoose.connection.on("error", (err) => {
 });
 
 httpserver.listen(process.env.PORT || 3002, () => {
-  console.log("listening on port 3002");
+  // console.log("listening on port 3002");
 });

@@ -10,7 +10,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import Sidra from "../assets/sidra.jpg";
 
-const socket = io("https://c395-182-185-213-143.in.ngrok.io");
+const socket = io("https://1ffe-182-185-185-237.in.ngrok.io");
 const DashboardScreen = () => {
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
@@ -32,9 +32,11 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     if (ListRef) {
-      ListRef.current.scrollToEnd({ animated: false });
+      setTimeout(() => {
+        ListRef.current.scrollToEnd({ animated: false });
+      }, 200);
     }
-  }, [messages]);
+  }, [messages, ListRef]);
 
   useEffect(() => {
     (async () => {

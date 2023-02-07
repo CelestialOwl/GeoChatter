@@ -17,6 +17,10 @@ const messageSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  chatRoom: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ChatRoom",
+  },
 });
 
 export default mongoose.model("Message", messageSchema);

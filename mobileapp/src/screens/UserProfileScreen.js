@@ -13,13 +13,11 @@ const UserProfileScreen = () => {
 
   const saveLocation = async (location) => {
     const email = await AsyncStorage.getItem("email");
-    console.log(email);
 
     const response = await Chatterapi.post("/save-location", {
       location,
       email,
     });
-    console.log(response.data);
   };
 
   useEffect(() => {
