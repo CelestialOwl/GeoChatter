@@ -9,8 +9,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import Sidra from "../assets/sidra.jpg";
+import { url } from "../API/ChatterAPI";
 
-const socket = io("https://1ffe-182-185-185-237.in.ngrok.io");
+const socket = io(url);
 const DashboardScreen = () => {
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");

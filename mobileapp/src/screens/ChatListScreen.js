@@ -19,12 +19,11 @@ const ChatListScreen = () => {
     setUserList(response.data.userList);
   };
 
-  const startChat = async (id) => {
+  const startChat = async (recipient) => {
+    console.log(recipient);
     const response = await ChatterApi.post("/create-room", {
-      recepient: id,
+      recipient: recipient,
     });
-
-    console.log(response);
   };
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const ChatListScreen = () => {
         {userList !== null
           ? userList.map((user) => (
               <View
-                onTouchEnd={() => startChat(user._id)}
+                onTouchEnd={() => startChat(user)}
                 key={user._id}
                 style={styles.card}
               >
