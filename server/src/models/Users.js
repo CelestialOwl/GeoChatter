@@ -20,6 +20,13 @@ const hobbySchema = new mongoose.Schema({
     type: Boolean,
   },
 });
+const chat = new mongoose.Schema({
+  chatMessage: {
+    chatId: String,
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "User",
+  },
+});
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -46,6 +53,7 @@ const userSchema = new mongoose.Schema({
   },
   location: locationSchema,
   hobbies: [hobbySchema],
+  chats: [String],
 });
 
 userSchema.pre("save", function (next) {

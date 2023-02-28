@@ -3,6 +3,7 @@ import requireAuth from "../middlewares/requireAuth.js";
 import Message from "../models/Message.js";
 import ChatRoom from "../models/ChatRoom.js";
 import Users from "../models/Users.js";
+import mongoose from "mongoose";
 
 const router = Router();
 
@@ -14,18 +15,34 @@ router.get("/fetch-messages", async (req, res) => {
   });
 });
 router.post("/create-room", async (req, res) => {
-  const recUser = await Users.findOne({ _id: req.body.recipient._id });
-  console.log(recUser);
-
-  const participents = [req.user._id, recUser._id];
-  console.log("users rooms", participents);
-  const resp = await new ChatRoom({
-    private: true,
-    participents: participents,
-  });
-  await resp.save();
-  res.status(200).send({ data: resp });
-  console.log("chat room", resp);
+  const recUser = await Users.findOne({ _id: req.user._id });
+  if (recUser !== undefined) {
+    if (recUser.chats.includes(req.body.recipient._id.toString())) {
+      // console.log("user back results", myresult);
+      res.status(200).send({ data: "chat already exist!" });
+      return;
+    } else {
+      const users = [
+        req.user._id.toString(),
+        req.body.recipient._id.toString(),
+      ];
+      const resp = await new ChatRoom({
+        private: true,
+        users,
+      });
+      await resp.save();
+      Users.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          $push: {
+            chats: req.body.recipient._id.toString(),
+          },
+        },
+        (err, data) => {}
+      );
+    }
+    res.status(200).send({ status: true, data: "new converstation started" });
+  }
 });
 
 export default router;

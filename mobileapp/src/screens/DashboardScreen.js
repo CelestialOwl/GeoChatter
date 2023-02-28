@@ -12,7 +12,9 @@ import Sidra from "../assets/sidra.jpg";
 import { url } from "../API/ChatterAPI";
 
 const socket = io(url);
-const DashboardScreen = () => {
+const DashboardScreen = ({ route }) => {
+  // const { roomId } = route.params;
+  // console.log("room ID", roomId);
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
 
@@ -82,7 +84,7 @@ const DashboardScreen = () => {
         <View style={styles.container}>
           <View style={styles.card}>
             <Image source={Sidra} style={styles.iconImage} />
-            <Text style={styles.name}>{"Sarah"}</Text>
+            <Text style={styles.name}>{"Sidra"}</Text>
           </View>
           <View
             style={{
@@ -92,8 +94,17 @@ const DashboardScreen = () => {
             <ScrollView ref={ListRef}>
               {messages.map((l, i) => (
                 <ListItem key={i}>
-                  <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flex: 1,
+                    }}
+                  >
                     <View>
+                      <Text
+                        style={{ position: "absolute", right: 10, bottom: 0 }}
+                      >
+                        {l.time}
+                      </Text>
                       <Avatar
                         rounded
                         source={{
@@ -102,9 +113,10 @@ const DashboardScreen = () => {
                       />
                     </View>
                     <View style={{ flex: 1, flexDirection: "row" }}>
-                      <Text>{l.time}</Text>
                       <ListItem.Content>
-                        <ListItem.Title style={{ marginLeft: 10 }}>
+                        <ListItem.Title
+                          style={{ position: "absolute", left: 45, top: -27.5 }}
+                        >
                           {l.text}
                         </ListItem.Title>
                       </ListItem.Content>

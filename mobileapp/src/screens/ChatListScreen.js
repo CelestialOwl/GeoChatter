@@ -12,7 +12,8 @@ import { Avatar, Text, Card, Image as EImage } from "react-native-elements";
 import staticImage from "../assets/sarah.jpg";
 import Sidra from "../assets/sidra.jpg";
 import ChatterApi from "../API/ChatterAPI.js";
-const ChatListScreen = () => {
+
+const ChatListScreen = ({ navigation }) => {
   const [userList, setUserList] = useState(null);
   const fetchUserList = async () => {
     const response = await ChatterApi.get("/users-list");
@@ -20,10 +21,15 @@ const ChatListScreen = () => {
   };
 
   const startChat = async (recipient) => {
-    console.log(recipient);
     const response = await ChatterApi.post("/create-room", {
       recipient: recipient,
     });
+    console.log("chat reply", response.data);
+    if (response.data.status === true) {
+      navigation.navigate("Dashboard", {
+        roomId: 23,
+      });
+    }
   };
 
   useEffect(() => {

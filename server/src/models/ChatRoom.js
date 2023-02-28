@@ -1,10 +1,20 @@
 import mongoose from "mongoose";
 
-const participentsSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Users",
+const messageSchema = new mongoose.Schema({
+  text: {
+    type: String,
+    require: true,
   },
+  username: {
+    type: String,
+  },
+  time: {
+    type: String,
+    required: true,
+  },
+});
+const usersSchema = new mongoose.Schema({
+  id: String,
 });
 
 const chatRoomSchema = new mongoose.Schema({
@@ -15,7 +25,8 @@ const chatRoomSchema = new mongoose.Schema({
   lastMessage: {
     type: String,
   },
-  participents: [participentsSchema],
+  users: [String],
+  messages: [messageSchema],
 });
 
 export default mongoose.model("ChatRoom", chatRoomSchema);
