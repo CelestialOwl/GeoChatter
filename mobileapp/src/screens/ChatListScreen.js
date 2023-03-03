@@ -27,7 +27,7 @@ const ChatListScreen = ({ navigation }) => {
     console.log("chat reply", response.data);
     if (response.data.status === true) {
       navigation.navigate("Dashboard", {
-        roomId: 23,
+        roomId: response.data.roomId,
       });
     }
   };

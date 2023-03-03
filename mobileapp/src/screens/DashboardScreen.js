@@ -12,8 +12,8 @@ import Sidra from "../assets/sidra.jpg";
 import { url } from "../API/ChatterAPI";
 
 const socket = io(url);
-const DashboardScreen = ({ route }) => {
-  // const { roomId } = route.params;
+const DashboardScreen = ({ route, navigation }) => {
+  const { roomId } = route.params;
   // console.log("room ID", roomId);
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
@@ -21,16 +21,20 @@ const DashboardScreen = ({ route }) => {
   const ListRef = useRef();
 
   async function fetchMessagesHistory() {
-    const response = await ChatterAPI.get("/fetch-messages");
-    const updatedArray = response.data.map((data) => {
-      return {
-        id: data._id,
-        text: data.text,
-        username: data.username,
-        time: data.time,
-      };
-    });
-    setMessages(updatedArray);
+    if (roomId) {
+      const formData = new FormData();
+      formData.append("roomId", roomId);
+      const response = await ChatterAPI.post("/fetch-messages", { roomId });
+      const updatedArray = response.data.map((data) => {
+        return {
+          id: data._id,
+          text: data.text,
+          username: data.username,
+          time: data.time,
+        };
+      });
+      setMessages(updatedArray);
+    }
   }
 
   useEffect(() => {
@@ -40,6 +44,13 @@ const DashboardScreen = ({ route }) => {
       }, 200);
     }
   }, [messages, ListRef]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      fetchMessagesHistory()
+    );
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     (async () => {
@@ -65,14 +76,14 @@ const DashboardScreen = ({ route }) => {
         { id: msg.userId, text: msg.text, time: msg.time },
       ]);
     });
-    fetchMessagesHistory();
     return () => console.log("stoped");
   }, [socket]);
 
   function onMessageSubmit(e) {
     console.log(socket.id);
     setField("");
-    socket.emit("chatMessage", field);
+    console.log("before send", field, roomId);
+    socket.emit("chatMessage", { field: field, roomId: roomId });
   }
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>

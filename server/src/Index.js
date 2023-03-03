@@ -11,6 +11,7 @@ import Users from "./models/Users.js";
 import userRoutes from "./routes/userRoutes.js";
 import Hobby from "./models/Hobby.js";
 import markLastSeen from "./middlewares/markLastSeen.js";
+import ChatRoom from "./models/ChatRoom.js";
 import {
   getRoomUsers,
   getCurrentUser,
@@ -67,24 +68,36 @@ io.on("connection", (socket) => {
 
   // Listen for chatMessage
   socket.on("chatMessage", (msg) => {
-    console.log(msg);
+    const roomId = mongoose.Types.ObjectId(msg.roomId);
+    console.log("user msg objec", roomId);
     const user = getCurrentUser(socket.id);
-    if (user) {
+    if (true) {
       try {
-        Message.insertMany(
-          [formatMessage(user.username, msg, user.userId)],
-          (err) => {
-            if (err === null) {
-              console.log("record inserted");
-            }
+        ChatRoom.findOneAndUpdate(
+          { _id: roomId },
+          {
+            $push: {
+              messages: formatMessage("Kappa", msg.field, "asdasd"),
+            },
+          },
+          (err, data) => {
+            console.log("err", err, "doc", data);
           }
         );
+        // .insertMany(
+        //   [formatMessage(user.username, msg.field, user.userId)],
+        //   (err) => {
+        //     if (err === null) {
+        //       console.log("record inserted");
+        //     }
+        //   }
+        // );
       } catch (err) {
         console.log("Error with saving the message");
       }
     }
 
-    io.emit("message", formatMessage(user.username, msg, user.userId));
+    io.emit("message", formatMessage("Kappa", msg.field, "asdasd"));
 
     // io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
