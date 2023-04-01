@@ -6,15 +6,14 @@ import { Button, Input, ListItem, Avatar } from "react-native-elements";
 import { io } from "socket.io-client";
 import ChatterAPI from "../API/ChatterAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import Sidra from "../assets/sidra.jpg";
 import { url } from "../API/ChatterAPI";
 
 const socket = io(url);
-const DashboardScreen = ({ route }) => {
+const DashboardScreen = ({ route, navigation }) => {
   const { roomId } = route.params;
-  console.log(roomId, "roomid");
   // console.log("room ID", roomId);
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
@@ -22,18 +21,20 @@ const DashboardScreen = ({ route }) => {
   const ListRef = useRef();
 
   async function fetchMessagesHistory() {
-    const response = await ChatterAPI.post("/fetch-messages", {
-      chatID: roomId,
-    });
-    const updatedArray = response.data.map((data) => {
-      return {
-        id: data._id,
-        text: data.text,
-        username: data.username,
-        time: data.time,
-      };
-    });
-    setMessages(updatedArray);
+    if (roomId) {
+      const formData = new FormData();
+      formData.append("roomId", roomId);
+      const response = await ChatterAPI.post("/fetch-messages", { roomId });
+      const updatedArray = response.data.map((data) => {
+        return {
+          id: data._id,
+          text: data.text,
+          username: data.username,
+          time: data.time,
+        };
+      });
+      setMessages(updatedArray);
+    }
   }
 
   useEffect(() => {
@@ -43,6 +44,13 @@ const DashboardScreen = ({ route }) => {
       }, 200);
     }
   }, [messages, ListRef]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      fetchMessagesHistory()
+    );
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     (async () => {
@@ -68,14 +76,14 @@ const DashboardScreen = ({ route }) => {
         { id: msg.userId, text: msg.text, time: msg.time },
       ]);
     });
-    fetchMessagesHistory();
     return () => console.log("stoped");
   }, [socket]);
 
   function onMessageSubmit(e) {
     console.log(socket.id);
     setField("");
-    socket.emit("chatMessage", { message: field, chatRoomId: roomId });
+    console.log("before send", field, roomId);
+    socket.emit("chatMessage", { field: field, roomId: roomId });
   }
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>
@@ -137,7 +145,7 @@ const DashboardScreen = ({ route }) => {
                 onChangeText={setField}
               />
             </View>
-            <Feather name="send" size={25} onPress={onMessageSubmit} />
+            <FontAwesome name="send" size={25} onPress={onMessageSubmit} />
           </View>
         </View>
       </KeyboardAvoidingView>

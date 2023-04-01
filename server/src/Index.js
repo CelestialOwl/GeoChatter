@@ -11,6 +11,7 @@ import Users from "./models/Users.js";
 import userRoutes from "./routes/userRoutes.js";
 import Hobby from "./models/Hobby.js";
 import markLastSeen from "./middlewares/markLastSeen.js";
+import ChatRoom from "./models/ChatRoom.js";
 import {
   getRoomUsers,
   getCurrentUser,
@@ -71,7 +72,7 @@ io.on("connection", (socket) => {
     console.log(msg);
     const chatId = mongoose.Types.ObjectId(msg.chatRoomId);
     const user = getCurrentUser(socket.id);
-    if (user) {
+    if (true) {
       try {
         ChatRoom.findOneAndUpdate(
           { _id: chatId },
@@ -90,6 +91,14 @@ io.on("connection", (socket) => {
             }
           }
         );
+        // .insertMany(
+        //   [formatMessage(user.username, msg.field, user.userId)],
+        //   (err) => {
+        //     if (err === null) {
+        //       console.log("record inserted");
+        //     }
+        //   }
+        // );
       } catch (err) {
         console.log("Error with saving the message");
       }
