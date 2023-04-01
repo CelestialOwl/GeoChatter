@@ -20,6 +20,7 @@ import {
 import mongoose from "mongoose";
 import Message from "./models/Message.js";
 import * as dotenv from "dotenv";
+import ChatRoom from "./models/ChatRoom.js";
 
 dotenv.config();
 const app = express();
@@ -68,9 +69,19 @@ io.on("connection", (socket) => {
   // Listen for chatMessage
   socket.on("chatMessage", (msg) => {
     console.log(msg);
+    const chatId = mongoose.Types.ObjectId(msg.chatRoomId);
     const user = getCurrentUser(socket.id);
     if (user) {
       try {
+        ChatRoom.findOneAndUpdate(
+          { _id: chatId },
+          {
+            $push: {
+              messages: formatMessage(user.username, msg.message, user.userId),
+            },
+          },
+          (err, doc) => console.log(err, "err", doc, "csdfsd")
+        );
         Message.insertMany(
           [formatMessage(user.username, msg, user.userId)],
           (err) => {
@@ -84,7 +95,7 @@ io.on("connection", (socket) => {
       }
     }
 
-    io.emit("message", formatMessage(user.username, msg, user.userId));
+    io.emit("message", formatMessage(user.username, msg.message, user.userId));
 
     // io.to(user.room).emit("message", formatMessage(user.username, msg));
   });

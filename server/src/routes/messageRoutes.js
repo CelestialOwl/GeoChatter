@@ -9,37 +9,64 @@ const router = Router();
 
 router.use(requireAuth);
 
-router.get("/fetch-messages", async (req, res) => {
-  Message.find({}, (err, users) => {
-    res.send(users);
+router.post("/fetch-messages", async (req, res) => {
+  const chatIdObj = mongoose.Types.ObjectId(req.body.chatID);
+  ChatRoom.findOne({ _id: chatIdObj }, (err, users) => {
+    console.log(users);
+    res.send(users.messages);
   });
 });
 router.post("/create-room", async (req, res) => {
   const recUser = await Users.findOne({ _id: req.user._id });
+
   if (recUser !== undefined) {
-    if (recUser.chats.includes(req.body.recipient._id.toString())) {
-      // console.log("user back results", myresult);
-      res.status(200).send({ data: "chat already exist!" });
-      return;
-    } else {
-      const users = [
-        req.user._id.toString(),
-        req.body.recipient._id.toString(),
-      ];
-      const resp = await new ChatRoom({
-        private: true,
-        users,
-      });
-      await resp.save();
-      Users.findOneAndUpdate(
-        { _id: req.user._id },
-        {
-          $push: {
-            chats: req.body.recipient._id.toString(),
+    try {
+      if (recUser.chats.includes(req.body.recipient._id.toString())) {
+        ChatRoom.findOne(
+          {
+            users: {
+              $all: [
+                req.body.recipient._id.toString(),
+                req.user._id.toString(),
+              ],
+            },
           },
-        },
-        (err, data) => {}
-      );
+          (err, docs) => {
+            if (err) {
+              console.log("Error", err);
+            } else {
+              res.status(200).send({
+                status: true,
+                message: "chat already exist!",
+                chatId: docs._id.toString(),
+              });
+            }
+          }
+        );
+        // console.log("user back results", myresult);
+        return;
+      } else {
+        const users = [
+          req.user._id.toString(),
+          req.body.recipient._id.toString(),
+        ];
+        const resp = await new ChatRoom({
+          private: true,
+          users,
+        });
+        await resp.save();
+        Users.findOneAndUpdate(
+          { _id: req.user._id },
+          {
+            $push: {
+              chats: req.body.recipient._id.toString(),
+            },
+          },
+          (err, data) => {}
+        );
+      }
+    } catch (err) {
+      console.log("something is wrong", err);
     }
     res.status(200).send({ status: true, data: "new converstation started" });
   }

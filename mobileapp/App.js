@@ -27,7 +27,7 @@ const StackNew = createStackNavigator();
 function TabDashboardScreen() {
   return (
     <TabDashboard.Navigator
-      initialRouteName="preferences"
+      initialRouteName="chats"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -40,9 +40,9 @@ function TabDashboardScreen() {
         },
       })}
     >
-      <TabDashboard.Screen name="Dashboard" component={DashboardScreen} />
-      <TabUserProfile.Screen name="profile" component={UserProfileScreen} />
       <TabUserProfile.Screen name="chats" component={ChatListScreen} />
+      <TabDashboard.Screen name="Dashboard" component={DashboardScreen} />
+      {/* <TabUserProfile.Screen name="profile" component={UserProfileScreen} /> */}
       <TabUserProfile.Screen
         name="preferences"
         component={DrawserUserPreferencesScreen}

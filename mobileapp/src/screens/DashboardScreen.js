@@ -6,14 +6,15 @@ import { Button, Input, ListItem, Avatar } from "react-native-elements";
 import { io } from "socket.io-client";
 import ChatterAPI from "../API/ChatterAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import Sidra from "../assets/sidra.jpg";
 import { url } from "../API/ChatterAPI";
 
 const socket = io(url);
 const DashboardScreen = ({ route }) => {
-  // const { roomId } = route.params;
+  const { roomId } = route.params;
+  console.log(roomId, "roomid");
   // console.log("room ID", roomId);
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
@@ -21,7 +22,9 @@ const DashboardScreen = ({ route }) => {
   const ListRef = useRef();
 
   async function fetchMessagesHistory() {
-    const response = await ChatterAPI.get("/fetch-messages");
+    const response = await ChatterAPI.post("/fetch-messages", {
+      chatID: roomId,
+    });
     const updatedArray = response.data.map((data) => {
       return {
         id: data._id,
@@ -72,7 +75,7 @@ const DashboardScreen = ({ route }) => {
   function onMessageSubmit(e) {
     console.log(socket.id);
     setField("");
-    socket.emit("chatMessage", field);
+    socket.emit("chatMessage", { message: field, chatRoomId: roomId });
   }
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>
@@ -134,7 +137,7 @@ const DashboardScreen = ({ route }) => {
                 onChangeText={setField}
               />
             </View>
-            <FontAwesome name="send" size={25} onPress={onMessageSubmit} />
+            <Feather name="send" size={25} onPress={onMessageSubmit} />
           </View>
         </View>
       </KeyboardAvoidingView>

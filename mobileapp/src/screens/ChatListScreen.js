@@ -26,8 +26,9 @@ const ChatListScreen = ({ navigation }) => {
     });
     console.log("chat reply", response.data);
     if (response.data.status === true) {
+      console.log(response.data.chatId, "chat list response");
       navigation.navigate("Dashboard", {
-        roomId: 23,
+        roomId: response.data.chatId,
       });
     }
   };
