@@ -12,9 +12,10 @@ import Sidra from "../assets/sidra.jpg";
 import { url } from "../API/ChatterAPI";
 
 const socket = io(url);
+let USER_EMAIL;
+
 const DashboardScreen = ({ route, navigation }) => {
-  const { roomId } = route.params;
-  // console.log("room ID", roomId);
+  const { roomId, userData } = route.params;
   const [messages, setMessages] = useState([]);
   const [field, setField] = useState("");
 
@@ -46,19 +47,20 @@ const DashboardScreen = ({ route, navigation }) => {
   }, [messages, ListRef]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () =>
-      fetchMessagesHistory()
-    );
+    const unsubscribe = navigation.addListener("focus", () => {
+      setMessages([]);
+      fetchMessagesHistory();
+    });
     return unsubscribe;
-  }, [navigation]);
+  }, [roomId]);
 
   useEffect(() => {
     (async () => {
-      const email = await AsyncStorage.getItem("email");
+      USER_EMAIL = await AsyncStorage.getItem("email");
       socket.emit("joinRoom", {
         username: "Hassan",
         room: "Web",
-        email: email,
+        email: USER_EMAIL,
       });
     })();
     socket.on("connect", () => {
@@ -82,9 +84,13 @@ const DashboardScreen = ({ route, navigation }) => {
   function onMessageSubmit(e) {
     console.log(socket.id);
     setField("");
-    console.log("before send", field, roomId);
-    socket.emit("chatMessage", { field: field, roomId: roomId });
+    socket.emit("chatMessage", {
+      field: field,
+      chatRoomId: roomId,
+      email: USER_EMAIL,
+    });
   }
+  // const mapArrayToObjects = messages.map();
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>
       <KeyboardAvoidingView
@@ -95,7 +101,7 @@ const DashboardScreen = ({ route, navigation }) => {
         <View style={styles.container}>
           <View style={styles.card}>
             <Image source={Sidra} style={styles.iconImage} />
-            <Text style={styles.name}>{"Sidra"}</Text>
+            <Text style={styles.name}>{userData.username}</Text>
           </View>
           <View
             style={{
@@ -104,7 +110,14 @@ const DashboardScreen = ({ route, navigation }) => {
           >
             <ScrollView ref={ListRef}>
               {messages.map((l, i) => (
-                <ListItem key={i}>
+                <ListItem
+                  style={{
+                    borderColor: "black",
+                    borderWidth: 2,
+                    borderStyle: "solid",
+                  }}
+                  key={i}
+                >
                   <View
                     style={{
                       flex: 1,
@@ -126,9 +139,14 @@ const DashboardScreen = ({ route, navigation }) => {
                     <View style={{ flex: 1, flexDirection: "row" }}>
                       <ListItem.Content>
                         <ListItem.Title
-                          style={{ position: "absolute", left: 45, top: -27.5 }}
+                          style={{ position: "absolute", left: 45, top: -40 }}
                         >
-                          {l.text}
+                          <View style={{ display: "flex" }}>
+                            <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                              {l.username}
+                            </Text>
+                            <Text>{l.text}</Text>
+                          </View>
                         </ListItem.Title>
                       </ListItem.Content>
                     </View>

@@ -41,7 +41,6 @@ function TabDashboardScreen() {
       })}
     >
       <TabUserProfile.Screen name="chats" component={ChatListScreen} />
-      <TabDashboard.Screen name="Dashboard" component={DashboardScreen} />
       {/* <TabUserProfile.Screen name="profile" component={UserProfileScreen} /> */}
       <TabUserProfile.Screen
         name="preferences"
@@ -87,6 +86,7 @@ export default function App() {
           <StackNew.Screen name="signin" component={SigninScreen} />
           <StackNew.Screen name="signup" component={SignupScreen} />
           <StackNew.Screen name="account" component={TabDashboardScreen} />
+          <StackNew.Screen name="Dashboard" component={DashboardScreen} />
         </StackNew.Navigator>
       </NavigationContainer>
     </AuthProvider>
