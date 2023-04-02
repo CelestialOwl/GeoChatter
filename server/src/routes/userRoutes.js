@@ -18,7 +18,11 @@ router.post("/fetch-profile", markLastSeen, async (req, res) => {
 
 router.get("/users-list", markLastSeen, async (req, res) => {
   const response = await User.find({});
-  res.status(200).send({ status: true, userList: response });
+  const filteredArray = response.filter(
+    (a) => a._id.toString() !== req.user._id.toString()
+  );
+  console.log(filteredArray);
+  res.status(200).send({ status: true, userList: filteredArray });
 });
 
 router.post("/save-hobby", markLastSeen, async (req, res) => {

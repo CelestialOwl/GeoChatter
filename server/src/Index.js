@@ -21,7 +21,6 @@ import {
 import mongoose from "mongoose";
 import Message from "./models/Message.js";
 import * as dotenv from "dotenv";
-import ChatRoom from "./models/ChatRoom.js";
 
 dotenv.config();
 const app = express();
@@ -35,7 +34,10 @@ export const io = new Server(httpserver, {
 
 let botName = "twitch";
 
+export let socket_instance;
+
 io.on("connection", (socket) => {
+  socket_instance = socket;
   console.log("A user connected", socket.id);
 
   socket.on("joinRoom", async ({ username, room, email }) => {
@@ -68,9 +70,11 @@ io.on("connection", (socket) => {
   });
 
   // Listen for chatMessage
-  socket.on("chatMessage", (msg) => {
+  socket.on("chatMessage", async (msg) => {
     console.log(msg);
     const chatId = mongoose.Types.ObjectId(msg.chatRoomId);
+    const User_obj = await Users.findOne({ email: msg.email });
+    console.log(User_obj);
     const user = getCurrentUser(socket.id);
     if (true) {
       try {
@@ -78,19 +82,23 @@ io.on("connection", (socket) => {
           { _id: chatId },
           {
             $push: {
-              messages: formatMessage(user.username, msg.message, user.userId),
+              messages: formatMessage(
+                User_obj.username,
+                msg.field,
+                User_obj._id
+              ),
             },
           },
           (err, doc) => console.log(err, "err", doc, "csdfsd")
         );
-        Message.insertMany(
-          [formatMessage(user.username, msg, user.userId)],
-          (err) => {
-            if (err === null) {
-              console.log("record inserted");
-            }
-          }
-        );
+        // Message.insertMany(
+        //   [formatMessage(user.username, msg, user.userId)],
+        //   (err) => {
+        //     if (err === null) {
+        //       console.log("record inserted");
+        //     }
+        //   }
+        // );
         // .insertMany(
         //   [formatMessage(user.username, msg.field, user.userId)],
         //   (err) => {
@@ -102,9 +110,11 @@ io.on("connection", (socket) => {
       } catch (err) {
         console.log("Error with saving the message");
       }
+      io.emit(
+        "message",
+        formatMessage(User_obj.username, msg.field, User_obj._id)
+      );
     }
-
-    io.emit("message", formatMessage(user.username, msg.message, user.userId));
 
     // io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
