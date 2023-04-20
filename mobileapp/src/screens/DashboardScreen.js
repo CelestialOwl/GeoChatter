@@ -81,8 +81,7 @@ const DashboardScreen = ({ route, navigation }) => {
     return () => console.log("stoped");
   }, [socket]);
 
-  function onMessageSubmit(e) {
-    console.log(socket.id);
+  function onMessageSubmit() {
     setField("");
     socket.emit("chatMessage", {
       field: field,
@@ -110,14 +109,7 @@ const DashboardScreen = ({ route, navigation }) => {
           >
             <ScrollView ref={ListRef}>
               {messages.map((l, i) => (
-                <ListItem
-                  style={{
-                    borderColor: "black",
-                    borderWidth: 2,
-                    borderStyle: "solid",
-                  }}
-                  key={i}
-                >
+                <ListItem key={i}>
                   <View
                     style={{
                       flex: 1,

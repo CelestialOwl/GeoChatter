@@ -1,8 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Animated,
+} from "react-native";
 import { Context } from "../context/AuthContext";
-import { Button, Input, ListItem, Chip } from "react-native-elements";
+import { Button, Input, ListItem, Chip, Slider } from "react-native-elements";
 import { FontAwesome } from "@expo/vector-icons";
 import App from "../../App.scss";
 import Sidra from "../assets/sidra.jpg";
@@ -13,6 +20,7 @@ const UserPreferences = ({ navigation }) => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [hobbies, setHobbies] = useState([]);
+  const [locationRange, setLocationRange] = useState(0.2);
 
   let emailFromLocalStorage;
 
@@ -88,6 +96,28 @@ const UserPreferences = ({ navigation }) => {
             ))
           : null}
       </ScrollView>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "stretch",
+          justifyContent: "center",
+          marginTop: 30,
+        }}
+      >
+        <Slider
+          value={locationRange}
+          thumbTintColor={"#2171ff"}
+          step={0.1}
+          minimumValue={0}
+          maximumValue={1}
+          onValueChange={(value) => {
+            setLocationRange(value);
+          }}
+        />
+      </View>
+      <View>
+        <Text>Value: {Math.floor(locationRange * 100)}</Text>
+      </View>
     </View>
   );
 };
