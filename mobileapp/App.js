@@ -5,9 +5,9 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SigninScreen from "./src/screens/SigninScreen";
 import SignupScreen from "./src/screens/SignupScreen";
-import AccountScreen from "./src/screens/AccountScreen";
-import DashboardScreen from "./src/screens/DashboardScreen";
-import UserProfileScreen from "./src/screens/UserProfileScreen";
+import AccountScreen from "./src/screens/inactive/AccountScreen";
+import ChatScreen from "./src/screens/ChatScreen";
+// import UserProfileScreen from "./src/screens/inactive/UserProfileScreen";
 import UserPreferences from "./src/screens/UserPreferences";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
@@ -15,7 +15,7 @@ import { navigationRef } from "./src/NavigationRef";
 import "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
-import ChatListScreen from "./src/screens/ChatListScreen";
+import UsersListScreen from "./src/screens/UsersListScreen";
 import { useFonts } from "expo-font";
 
 const DrawerUserPreferences = createDrawerNavigator();
@@ -40,7 +40,7 @@ function TabDashboardScreen() {
         },
       })}
     >
-      <TabUserProfile.Screen name="chats" component={ChatListScreen} />
+      <TabUserProfile.Screen name="chats" component={UsersListScreen} />
       {/* <TabUserProfile.Screen name="profile" component={UserProfileScreen} /> */}
       <TabUserProfile.Screen
         name="preferences"
@@ -86,7 +86,7 @@ export default function App() {
           <StackNew.Screen name="signin" component={SigninScreen} />
           <StackNew.Screen name="signup" component={SignupScreen} />
           <StackNew.Screen name="account" component={TabDashboardScreen} />
-          <StackNew.Screen name="Dashboard" component={DashboardScreen} />
+          <StackNew.Screen name="Dashboard" component={ChatScreen} />
         </StackNew.Navigator>
       </NavigationContainer>
     </AuthProvider>

@@ -2,7 +2,7 @@ import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import AndroidSafeArea from "../components/SafeArea";
 import { SafeAreaView } from "react-native";
-import { Button, Input, ListItem, Avatar } from "react-native-elements";
+import { Input, ListItem, Avatar } from "react-native-elements";
 import { io } from "socket.io-client";
 import ChatterAPI from "../API/ChatterAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +10,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import Sidra from "../assets/sidra.jpg";
 import { url } from "../API/ChatterAPI";
+import Notification from "../components/Notification";
+import * as Notifications from "expo-notifications";
 
 const socket = io(url);
 let USER_EMAIL;
@@ -36,6 +38,23 @@ const DashboardScreen = ({ route, navigation }) => {
       });
       setMessages(updatedArray);
     }
+  }
+
+  async function onMessageSubmit() {
+    setField("");
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: USER_EMAIL,
+        body: field,
+        data: { data: "goes here" },
+      },
+      trigger: { seconds: 2 },
+    });
+    socket.emit("chatMessage", {
+      field: field,
+      chatRoomId: roomId,
+      email: USER_EMAIL,
+    });
   }
 
   useEffect(() => {
@@ -69,9 +88,6 @@ const DashboardScreen = ({ route, navigation }) => {
     socket.io.on("error", (err) => {
       console.log(err);
     });
-    socket.on("roomUsers", ({ room, users }) => {
-      // console.log(users, room);
-    });
     socket.on("message", (msg) => {
       setMessages((prevState) => [
         ...prevState,
@@ -80,16 +96,6 @@ const DashboardScreen = ({ route, navigation }) => {
     });
     return () => console.log("stoped");
   }, [socket]);
-
-  function onMessageSubmit() {
-    setField("");
-    socket.emit("chatMessage", {
-      field: field,
-      chatRoomId: roomId,
-      email: USER_EMAIL,
-    });
-  }
-  // const mapArrayToObjects = messages.map();
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>
       <KeyboardAvoidingView
@@ -98,6 +104,7 @@ const DashboardScreen = ({ route, navigation }) => {
         keyboardVerticalOffset={50}
       >
         <View style={styles.container}>
+          <Notification />
           <View style={styles.card}>
             <Image source={Sidra} style={styles.iconImage} />
             <Text style={styles.name}>{userData.username}</Text>

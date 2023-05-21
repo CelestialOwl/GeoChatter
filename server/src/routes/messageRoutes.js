@@ -33,7 +33,6 @@ router.post("/create-room", async (req, res) => {
         },
         (err, docs) => {
           if (err) {
-            console.log("Error", err);
           } else {
             if (docs !== null) {
               res.status(200).send({
@@ -47,7 +46,6 @@ router.post("/create-room", async (req, res) => {
           }
         }
       );
-      // console.log("user back results", myresult);
       return;
     } else {
       const users = [

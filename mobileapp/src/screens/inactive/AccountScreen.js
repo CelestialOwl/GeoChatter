@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useEffect } from "react";
 import { Button, Image, View, Platform, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import Chatterapi from "../API/ChatterAPI";
+import Chatterapi from "../../API/ChatterAPI";
 
 const AccountScreen = () => {
   const [image, setImage] = useState(null);

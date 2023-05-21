@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, Platform } from "react-native";
-import AndroidSafeArea from "../components/SafeArea";
+import AndroidSafeArea from "../../components/SafeArea";
 import { SafeAreaView } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Chatterapi from "../API/ChatterAPI";
+import Chatterapi from "../../API/ChatterAPI";
 
 const UserProfileScreen = () => {
   const [location, setLocation] = useState(null);

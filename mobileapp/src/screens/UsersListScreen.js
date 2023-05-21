@@ -1,20 +1,13 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  ImageBackground,
-  StatusBar,
-  Image,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import AndroidsafeArea from "../components/SafeArea";
-import { Avatar, Text, Card, Image as EImage } from "react-native-elements";
-import staticImage from "../assets/sarah.jpg";
-import Sidra from "../assets/sidra.jpg";
+import { Avatar, Text } from "react-native-elements";
 import ChatterApi from "../API/ChatterAPI.js";
+import Notification from "../components/Notification";
 
 const ChatListScreen = ({ navigation }) => {
   const [userList, setUserList] = useState(null);
+
   const fetchUserList = async () => {
     const response = await ChatterApi.get("/users-list");
     setUserList(response.data.userList);
@@ -24,10 +17,7 @@ const ChatListScreen = ({ navigation }) => {
     const response = await ChatterApi.post("/create-room", {
       recipient: recipient,
     });
-    console.log("chat reply", response.data);
     if (response.data.status === true) {
-      console.log(response.data.chatId, "chat list response");
-
       navigation.navigate("Dashboard", {
         roomId: response.data.chatId,
         userData: response.data.user,
@@ -38,6 +28,7 @@ const ChatListScreen = ({ navigation }) => {
   useEffect(() => {
     fetchUserList();
   }, []);
+
   return (
     <SafeAreaView style={AndroidsafeArea.AndroidSafeArea}>
       <View style={styles.container}>
@@ -62,14 +53,11 @@ const ChatListScreen = ({ navigation }) => {
                   onPress={() => console.log("clicked")}
                   onLongPress={() => console.log("long")}
                 />
-                {/* <Image
-                  source={require("../assets/sarah.jpg")}
-                  style={styles.iconImage}
-                /> */}
                 <Text style={styles.name}>{user.username}</Text>
               </View>
             ))
           : null}
+        <Notification />
       </View>
     </SafeAreaView>
   );

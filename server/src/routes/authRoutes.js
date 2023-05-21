@@ -4,7 +4,6 @@ import User from "../models/Users.js";
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-  console.log("user body", req.body);
   const { email, password, username } = req.body;
   try {
     const user = new User({ email, password, username });

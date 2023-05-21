@@ -57,12 +57,13 @@ const UserPreferences = ({ navigation }) => {
     }
   };
 
+  const fetchEmailFromLocalStorage = async () => {
+    emailFromLocalStorage = await AsyncStorage.getItem("email");
+    fetchUserData();
+    fetchHobbies();
+  };
+
   useEffect(() => {
-    const fetchEmailFromLocalStorage = async () => {
-      emailFromLocalStorage = await AsyncStorage.getItem("email");
-      fetchUserData();
-      fetchHobbies();
-    };
     fetchEmailFromLocalStorage();
   }, []);
   return (

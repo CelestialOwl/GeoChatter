@@ -71,10 +71,8 @@ io.on("connection", (socket) => {
 
   // Listen for chatMessage
   socket.on("chatMessage", async (msg) => {
-    console.log(msg);
     const chatId = mongoose.Types.ObjectId(msg.chatRoomId);
     const User_obj = await Users.findOne({ email: msg.email });
-    console.log(User_obj);
     const user = getCurrentUser(socket.id);
     if (true) {
       try {

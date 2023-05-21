@@ -21,7 +21,6 @@ router.get("/users-list", markLastSeen, async (req, res) => {
   const filteredArray = response.filter(
     (a) => a._id.toString() !== req.user._id.toString()
   );
-  console.log(filteredArray);
   res.status(200).send({ status: true, userList: filteredArray });
 });
 
@@ -33,13 +32,11 @@ router.post("/save-hobby", markLastSeen, async (req, res) => {
   if (hobbyIndex >= 0) {
     fetchedUser.hobbies[hobbyIndex].selected = req.body.selected;
   } else {
-    console.log("something went wrong");
   }
   User.findOneAndUpdate(
     { email: req.body.email },
     { hobbies: fetchedUser.hobbies },
     (err, data) => {
-      console.log(err, "something went wrong");
       res.status(200).send({ status: "ok" });
     }
   );
@@ -63,9 +60,7 @@ router.post("/edit-profile", upload.single("image"), async (req, res) => {
       contentType: "image/jpg",
     },
   };
-  User.findOneAndUpdate({ email: "new" }, { img: obj }, (err) => {
-    console.log("user error", err);
-  });
+  User.findOneAndUpdate({ email: "new" }, { img: obj }, (err) => {});
 
   res.status(200).send({ msg: "success" });
 });

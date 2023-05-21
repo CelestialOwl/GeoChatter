@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const url = "https://b8ea-182-178-238-123.in.ngrok.io";
+export const url = "https://a651-119-155-47-98.ngrok-free.app";
 
 const instance = axios.create({
   baseURL: url,
