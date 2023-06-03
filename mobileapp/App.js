@@ -51,7 +51,7 @@ function TabDashboardScreen() {
 }
 function DrawserUserPreferencesScreen() {
   return (
-    <DrawerUserPreferences.Navigator initialRouteName="preference">
+    <DrawerUserPreferences.Navigator initialRouteName="accountsetting">
       <DrawerUserPreferences.Screen
         name="preference"
         component={UserPreferences}

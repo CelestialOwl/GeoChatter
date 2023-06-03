@@ -48,21 +48,19 @@ router.post("/fetch-hobbies", markLastSeen, async (req, res) => {
 });
 
 router.post("/edit-profile", upload.single("image"), async (req, res) => {
-  var obj = {
-    img: {
-      data: fs.readFileSync(
-        path.join(
-          path.dirname(fileURLToPath(import.meta.url)) +
-            "/uploads/" +
-            "sarah.jpg"
-        )
-      ),
-      contentType: "image/jpg",
-    },
-  };
-  User.findOneAndUpdate({ email: "new" }, { img: obj }, (err) => {});
-
-  res.status(200).send({ msg: "success" });
+  try {
+    const path = req.file.path;
+    const convertedPath = path.replace(/\\/g, "/");
+    console.log("reqfile", convertedPath);
+    const response = await User.findOneAndUpdate(
+      { email: "New" },
+      { img: convertedPath }
+    );
+    console.log(response);
+    res.status(200).send({ msg: "success" });
+  } catch (err) {
+    res.status(400).send({ msg: "something went wrong" });
+  }
 });
 
 export default router;

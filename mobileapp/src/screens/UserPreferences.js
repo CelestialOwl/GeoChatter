@@ -14,11 +14,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import App from "../../App.scss";
 import Sidra from "../assets/sidra.jpg";
 import Chatterapi from "../API/ChatterAPI.js";
+import { url } from "../API/ChatterAPI.js";
 
 const UserPreferences = ({ navigation }) => {
   const { signout } = useContext(Context);
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
+  const [profile, setProfile] = useState(undefined);
   const [hobbies, setHobbies] = useState([]);
   const [locationRange, setLocationRange] = useState(0.2);
 
@@ -30,7 +32,10 @@ const UserPreferences = ({ navigation }) => {
     });
     setUser(response.data.user.username);
     setEmail(response.data.user.email);
-    var aasaasaas;
+    if (response.data.user.img) {
+      setProfile(response.data.user.img);
+    }
+    console.log("user profile", response.data);
   };
 
   const fetchHobbies = async () => {
@@ -69,7 +74,11 @@ const UserPreferences = ({ navigation }) => {
   return (
     <View>
       <View style={styles.card}>
-        <Image source={Sidra} style={App.iconImage} />
+        {profile ? (
+          <Image source={{ uri: `${url}/${profile}` }} style={App.iconImage} />
+        ) : (
+          <Image source={Sidra} style={App.iconImage} />
+        )}
         <Text style={App.name}>{"Sarah"}</Text>
       </View>
       <Input value={user} placeholder="Username" />

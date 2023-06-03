@@ -10,12 +10,16 @@ import markLastSeen from "./middlewares/markLastSeen.js";
 import mongoose from "mongoose";
 import { io } from "./utils/socket.js";
 import * as dotenv from "dotenv";
+// import cors from "cors";
 dotenv.config();
 
 const mongoUri = process.env.MONGO_LOCAL_URL;
 const app = express();
 const httpserver = createServer(app);
 
+app.use("/uploads", express.static("uploads"));
+
+// app.options("*", cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(authRoutes);
