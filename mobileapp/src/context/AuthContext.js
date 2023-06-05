@@ -60,6 +60,13 @@ const signin =
     try {
       const response = await ChatterAPI.post("/signin", { email, password });
       await AsyncStorage.setItem("token", response.data.token);
+      const profileResponse = await ChatterAPI.post("/fetch-profile", {
+        email: email,
+      });
+      console.log(profileResponse.data);
+      await AsyncStorage.getAllKeys().then((res) =>
+        console.log("res from local", res)
+      );
       await AsyncStorage.setItem("email", email);
       dispatch({ type: "signin", payload: response.data.token });
       RootNavigation.navigate("account");

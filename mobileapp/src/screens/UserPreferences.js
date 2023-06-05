@@ -4,10 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   ScrollView,
   Animated,
+  ActivityIndicator,
 } from "react-native";
+import { Image } from "react-native-elements";
 import { Context } from "../context/AuthContext";
 import { Button, Input, ListItem, Chip, Slider } from "react-native-elements";
 import { FontAwesome } from "@expo/vector-icons";
@@ -75,7 +76,11 @@ const UserPreferences = ({ navigation }) => {
     <View>
       <View style={styles.card}>
         {profile ? (
-          <Image source={{ uri: `${url}/${profile}` }} style={App.iconImage} />
+          <Image
+            source={{ uri: `${url}/${profile}` }}
+            PlaceholderContent={<ActivityIndicator />}
+            style={App.iconImage}
+          />
         ) : (
           <Image source={Sidra} style={App.iconImage} />
         )}

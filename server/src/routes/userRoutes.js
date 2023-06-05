@@ -48,15 +48,14 @@ router.post("/fetch-hobbies", markLastSeen, async (req, res) => {
 });
 
 router.post("/edit-profile", upload.single("image"), async (req, res) => {
+  console.log("user body", req.body);
   try {
     const path = req.file.path;
     const convertedPath = path.replace(/\\/g, "/");
-    console.log("reqfile", convertedPath);
     const response = await User.findOneAndUpdate(
-      { email: "New" },
+      { email: req.body.email },
       { img: convertedPath }
     );
-    console.log(response);
     res.status(200).send({ msg: "success" });
   } catch (err) {
     res.status(400).send({ msg: "something went wrong" });

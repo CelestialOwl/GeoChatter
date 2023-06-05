@@ -1,12 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import SigninScreen from "./src/screens/SigninScreen";
-import SignupScreen from "./src/screens/SignupScreen";
+import SigninScreen from "./src/screens/Auth/SigninScreen";
+import SignupScreen from "./src/screens/Auth/SignupScreen";
 import AccountScreen from "./src/screens/inactive/AccountScreen";
-import ChatScreen from "./src/screens/ChatScreen";
+import ChatScreen from "./src/screens/Chats/ChatScreen";
 // import UserProfileScreen from "./src/screens/inactive/UserProfileScreen";
 import UserPreferences from "./src/screens/UserPreferences";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -15,7 +14,7 @@ import { navigationRef } from "./src/NavigationRef";
 import "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
-import UsersListScreen from "./src/screens/UsersListScreen";
+import ChatListsScreen from "./src/screens/Chats/ChatListsScreen";
 import { useFonts } from "expo-font";
 
 const DrawerUserPreferences = createDrawerNavigator();
@@ -40,7 +39,7 @@ function TabDashboardScreen() {
         },
       })}
     >
-      <TabUserProfile.Screen name="chats" component={UsersListScreen} />
+      <TabUserProfile.Screen name="chats" component={ChatListsScreen} />
       {/* <TabUserProfile.Screen name="profile" component={UserProfileScreen} /> */}
       <TabUserProfile.Screen
         name="preferences"
@@ -51,7 +50,7 @@ function TabDashboardScreen() {
 }
 function DrawserUserPreferencesScreen() {
   return (
-    <DrawerUserPreferences.Navigator initialRouteName="accountsetting">
+    <DrawerUserPreferences.Navigator initialRouteName="preference">
       <DrawerUserPreferences.Screen
         name="preference"
         component={UserPreferences}
