@@ -5,6 +5,8 @@ import { Avatar, Image, Text } from "react-native-elements";
 import ChatterApi from "../../API/ChatterAPI.js";
 import Notification from "../../components/Notification";
 import { url } from "../../API/ChatterAPI.js";
+import { FetchUserProfile } from "../../customHooks/FetchUserProfile";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChatListScreen = ({ navigation }) => {
   const [userList, setUserList] = useState(null);
@@ -12,6 +14,21 @@ const ChatListScreen = ({ navigation }) => {
   const fetchUserList = async () => {
     const response = await ChatterApi.get("/users-list");
     setUserList(response.data.userList);
+  };
+
+  const fetchAndSaveUserProfile = async () => {
+    const username = await AsyncStorage.getItem("username");
+    const email = await AsyncStorage.getItem("email");
+    console.log("username data for api", username);
+    console.log(email);
+    if (username === undefined || username === null) {
+      const { data } = await ChatterApi.post("/fetch-profile", {
+        email: email,
+      });
+      console.log(data);
+      await AsyncStorage.setItem("username", data.user.username);
+      await AsyncStorage.setItem("img", data.user.img);
+    }
   };
 
   const startChat = async (recipient) => {
@@ -28,6 +45,7 @@ const ChatListScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserList();
+    fetchAndSaveUserProfile();
   }, []);
 
   return (

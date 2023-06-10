@@ -47,23 +47,10 @@ const AccountScreen = () => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
+        <Button title="Upload" onPress={pickImage} />
         {image && (
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         )}
-        <View>
-          {
-            <ExpoImage
-              style={styles.image}
-              source={{
-                uri: "https://d8b1-119-155-47-98.ngrok-free.app/uploads/104864175_profile.jpg",
-              }}
-              // placeholder={"blurhash"}
-              contentFit="scale-down"
-              transition={1000}
-            />
-          }
-        </View>
       </View>
     </View>
   );

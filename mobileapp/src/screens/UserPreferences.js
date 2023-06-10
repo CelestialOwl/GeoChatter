@@ -13,7 +13,6 @@ import { Context } from "../context/AuthContext";
 import { Button, Input, ListItem, Chip, Slider } from "react-native-elements";
 import { FontAwesome } from "@expo/vector-icons";
 import App from "../../App.scss";
-import Sidra from "../assets/sidra.jpg";
 import Chatterapi from "../API/ChatterAPI.js";
 import { url } from "../API/ChatterAPI.js";
 
@@ -36,7 +35,6 @@ const UserPreferences = ({ navigation }) => {
     if (response.data.user.img) {
       setProfile(response.data.user.img);
     }
-    console.log("user profile", response.data);
   };
 
   const fetchHobbies = async () => {
@@ -82,9 +80,9 @@ const UserPreferences = ({ navigation }) => {
             style={App.iconImage}
           />
         ) : (
-          <Image source={Sidra} style={App.iconImage} />
+          <Image source={{ uri: profile }} style={App.iconImage} />
         )}
-        <Text style={App.name}>{"Sarah"}</Text>
+        <Text style={App.name}>{user}</Text>
       </View>
       <Input value={user} placeholder="Username" />
       <Input value={email} placeholder="Email" />
@@ -121,7 +119,7 @@ const UserPreferences = ({ navigation }) => {
       >
         <Slider
           value={locationRange}
-          thumbTintColor={"#2171ff"}
+          thumbTintColor={"#000"}
           step={0.1}
           minimumValue={0}
           maximumValue={1}
