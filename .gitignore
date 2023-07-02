@@ -3,5 +3,6 @@
 /server/.env
 /mobileapp/node_modules
 /webapp/node_modules
+/webapp/.env
 /mobileapp/.expo
 /server/uploads

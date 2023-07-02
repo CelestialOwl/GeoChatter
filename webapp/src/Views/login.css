@@ -54,3 +54,6 @@ label {
   background-position: center;
   background-size: cover;
 }
+.form-group-label {
+  font-family: Poppins-Bold;
+}

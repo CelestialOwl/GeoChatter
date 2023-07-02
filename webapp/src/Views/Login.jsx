@@ -10,16 +10,14 @@ const Login = () => {
         right: 0,
         marginRight: "auto",
         marginLeft: "auto",
-        marginTop: "20vh",
       }}
     >
       <div className="container">
         <div className="Auth-form-container">
           <form className="Auth-form">
             <div className="Auth-form-content">
-              <h3 className="Auth-form-title">Sign In</h3>
-              <div className="form-group mt-3">
-                <label>Email address</label>
+              <div className="form-group">
+                <label className="form-group-label">Email address</label>
                 <input
                   type="email"
                   className="form-control mt-1"

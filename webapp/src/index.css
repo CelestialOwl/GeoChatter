@@ -1,3 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Poppins-Bold;
+  src: url("./fonts/Poppins-Bold.ttf");
+}
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url("./fonts/Poppins-Regular.ttf");
+}
+
 .container-login100 {
   width: 100%;
   min-height: 100vh;
