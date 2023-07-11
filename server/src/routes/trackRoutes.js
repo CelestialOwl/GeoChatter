@@ -1,6 +1,7 @@
 import express from "express";
 import requireAuth from "../middlewares/requireAuth.js";
 import Track from "../models/Track.js";
+import Users from "../models/Users.js";
 
 const router = express.Router();
 
@@ -12,18 +13,20 @@ router.get("/tracks", async (req, res) => {
   res.send(tracks);
 });
 
-router.post("/tracks", async (req, res) => {
-  const { name, locations } = req.body;
+router.post("/save-location", async (req, res) => {
+  const { location, email } = req.body;
+  res.status(200).send({ ok: "ok" });
 
-  if (!name || !locations) {
-    return res
-      .status(422)
-      .send({ error: "You must provide a name and a locations" });
+  if (!location) {
+    return res.status(422).send({ error: "You must provide a location" });
   }
   try {
-    const track = new Track({ name, locations, userId: req.user._id });
-    await track.save();
-    res.send(track);
+    let doc = await Users.findOneAndUpdate(
+      { email: email },
+      { location: location },
+      { new: true }
+    );
+    // res.send(track);
   } catch (err) {
     res.status(422).send({ error: err.message });
   }

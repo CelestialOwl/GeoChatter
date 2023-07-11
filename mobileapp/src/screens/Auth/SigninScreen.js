@@ -1,15 +1,15 @@
 import { StyleSheet, View, TouchableOpacity, SafeAreaView } from "react-native";
 import React, { useContext, useEffect } from "react";
-import AuthForm from "../components/AuthForm";
-import Navlink from "../components/Navlink";
-import { Context } from "../context/AuthContext";
-import AndroidSafeArea from "../components/SafeArea";
+import AuthForm from "../../components/AuthForm";
+import Navlink from "../../components/Navlink";
+import { Context } from "../../context/AuthContext";
+import AndroidSafeArea from "../../components/SafeArea";
 
 const SigninScreen = ({ navigation }) => {
   const { signin, state, clearErrorMessage } = useContext(Context);
-  useEffect(() => {
-    navigation.navigate("account");
-  }, []);
+  // useEffect(() => {
+  //   navigation.navigate("account");
+  // }, []);
 
   return (
     <SafeAreaView style={AndroidSafeArea.AndroidSafeArea}>

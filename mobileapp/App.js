@@ -1,19 +1,21 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import SigninScreen from "./src/screens/SigninScreen";
-import SignupScreen from "./src/screens/SignupScreen";
-import AccountScreen from "./src/screens/AccountScreen";
-import DashboardScreen from "./src/screens/DashboardScreen";
-import UserProfileScreen from "./src/screens/UserProfileScreen";
+import SigninScreen from "./src/screens/Auth/SigninScreen";
+import SignupScreen from "./src/screens/Auth/SignupScreen";
+import AccountScreen from "./src/screens/inactive/AccountScreen";
+import ChatScreen from "./src/screens/Chats/ChatScreen";
+// import UserProfileScreen from "./src/screens/inactive/UserProfileScreen";
 import UserPreferences from "./src/screens/UserPreferences";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { navigationRef } from "./src/NavigationRef";
 import "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
+import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
+import ChatListsScreen from "./src/screens/Chats/ChatListsScreen";
+import { useFonts } from "expo-font";
 
 const DrawerUserPreferences = createDrawerNavigator();
 const TabDashboard = createBottomTabNavigator();
@@ -24,6 +26,7 @@ const StackNew = createStackNavigator();
 function TabDashboardScreen() {
   return (
     <TabDashboard.Navigator
+      initialRouteName="chats"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -36,8 +39,8 @@ function TabDashboardScreen() {
         },
       })}
     >
-      <TabDashboard.Screen name="Dashboard" component={DashboardScreen} />
-      <TabUserProfile.Screen name="profile" component={UserProfileScreen} />
+      <TabUserProfile.Screen name="chats" component={ChatListsScreen} />
+      {/* <TabUserProfile.Screen name="profile" component={UserProfileScreen} /> */}
       <TabUserProfile.Screen
         name="preferences"
         component={DrawserUserPreferencesScreen}
@@ -47,7 +50,7 @@ function TabDashboardScreen() {
 }
 function DrawserUserPreferencesScreen() {
   return (
-    <DrawerUserPreferences.Navigator>
+    <DrawerUserPreferences.Navigator initialRouteName="preference">
       <DrawerUserPreferences.Screen
         name="preference"
         component={UserPreferences}
@@ -61,13 +64,28 @@ function DrawserUserPreferencesScreen() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    MontserratRegular: require("./src/assets/fonts/Montserrat-Regular.otf"),
+    MontserratLight: require("./src/assets/fonts/Montserrat-Light.otf"),
+    MontserratSemiBold: require("./src/assets/fonts/Montserrat-SemiBold.otf"),
+    MontserratBold: require("./src/assets/fonts/Montserrat-Bold.otf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <AuthProvider>
       <NavigationContainer ref={navigationRef}>
-        <StackNew.Navigator screenOptions={{ headerShown: false }}>
+        <StackNew.Navigator
+          initialRouteName="localsignin"
+          screenOptions={{ headerShown: false }}
+        >
+          <StackNew.Screen name="localsignin" component={ResolveAuthScreen} />
           <StackNew.Screen name="signin" component={SigninScreen} />
           <StackNew.Screen name="signup" component={SignupScreen} />
           <StackNew.Screen name="account" component={TabDashboardScreen} />
+          <StackNew.Screen name="Dashboard" component={ChatScreen} />
         </StackNew.Navigator>
       </NavigationContainer>
     </AuthProvider>

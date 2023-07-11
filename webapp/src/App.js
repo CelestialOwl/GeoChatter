@@ -21,7 +21,7 @@ function App() {
     return () => {
       console.log("unmounting");
     };
-  }, []);
+  }, [socket]);
 
   return <div className="App">test</div>;
 }

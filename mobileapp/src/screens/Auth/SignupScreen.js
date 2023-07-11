@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useContext } from "react";
-import AuthForm from "../components/AuthForm";
-import Navlink from "../components/Navlink";
-import { Context as AuthContext } from "../context/AuthContext";
+import { Input } from "react-native-elements";
+import React, { useContext, useState } from "react";
+import AuthForm from "../../components/AuthForm";
+import Navlink from "../../components/Navlink";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const SignupScreen = ({ navigation }) => {
   const { state, signup, clearErrorMessage } = useContext(AuthContext);
@@ -13,6 +14,7 @@ const SignupScreen = ({ navigation }) => {
         errorMessage={state.errorMessage}
         onSubmitButtonText="Sign Up"
         onSubmit={signup}
+        parentElem={"signup"}
       />
       <Navlink
         navigation={navigation}

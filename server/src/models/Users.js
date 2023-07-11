@@ -1,15 +1,58 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+
+const locationSchema = new mongoose.Schema({
+  timeStamp: Number,
+  coords: {
+    latitude: Number,
+    longitude: Number,
+    altitude: Number,
+    accuracy: Number,
+    heading: Number,
+    speed: Number,
+  },
+});
+const hobbySchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  selected: {
+    type: Boolean,
+  },
+});
+const chat = new mongoose.Schema({
+  chatMessage: {
+    chatId: String,
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "User",
+  },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
     required: true,
   },
+  img: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,
   },
+  username: {
+    type: String,
+  },
+  lastonline: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  location: locationSchema,
+  hobbies: [hobbySchema],
+  chats: [String],
 });
 
 userSchema.pre("save", function (next) {

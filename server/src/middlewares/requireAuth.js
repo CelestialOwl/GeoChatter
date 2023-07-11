@@ -4,7 +4,6 @@ const User = mongoose.model("User");
 
 export default (req, res, next) => {
   const { authorization } = req.headers;
-
   if (!authorization) {
     return res.status(401).send({ error: "You must be logged in!" });
   }
@@ -14,7 +13,6 @@ export default (req, res, next) => {
     if (err) {
       return res.status(401).send({ error: "you must be logged in." });
     }
-
     const { userId } = payload;
 
     const user = await User.findById(userId);
