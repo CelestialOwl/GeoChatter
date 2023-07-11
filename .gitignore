@@ -4,4 +4,4 @@
 /webapp/node_modules
 /webapp/.env
 /mobileapp/.expo
-# /server/uploads
+/server/uploads
