@@ -4,13 +4,22 @@ const User = () => {
   return (
     <div
       style={{
-        display: "flex",
+        display: "inline-flex",
         flexDirection: "row",
         position: "relative",
       }}
     >
-      <img src="logo192.png" width={80} height={40} />
-      <div style={{ display: "flex", flexDirection: "column", marginLeft: 10 }}>
+      <div style={{ width: 60, height: 40 }}>
+        <img src="logo192.png" width={60} />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexGrow: 1,
+          flexDirection: "column",
+          marginLeft: 10,
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -18,10 +27,10 @@ const User = () => {
             justifyContent: "space-between",
           }}
         >
-          <h3 style={{ flexGrow: 2 }}>Kevin</h3>
-          <span>18:13</span>
+          <h5 style={{ flexGrow: 2 }}>Kevin</h5>
+          <span style={{ paddingRight: 10 }}>18:13</span>
         </div>
-        <p>Hi there how are you?</p>
+        <p style={{ fontSize: "0.8rem" }}>Hi there how are you?</p>
       </div>
     </div>
   );

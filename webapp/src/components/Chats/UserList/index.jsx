@@ -10,9 +10,6 @@ const UserList = () => {
         <User />
         <User />
         <User />
-        <User />
-        <User />
-        <User />
       </div>
     </div>
   );

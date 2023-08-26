@@ -16,6 +16,7 @@ import {
 import "./another-stylesheet.css";
 import SearchIcon from "@mui/icons-material/Search";
 import UserList from "./UserList";
+import Communities from "./communities";
 
 const theme = createTheme({
   typography: {
@@ -28,11 +29,14 @@ const Chats = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={0}>
         <Grid xs={0} md={4} sx={{ border: "2px solid black" }}>
-          <Box>
-            <FormControl variant="standard">
+          <Box sx={{ width: "100%" }} id="kappachino">
+            <div
+              style={{ height: 50, width: "100%", border: "2px solid purple" }}
+            ></div>
+            <FormControl variant="standard" fullWidth>
               <Input
                 id="input-with-icon-adornment"
-                startAdornment={
+                endAdornment={
                   <InputAdornment position="start">
                     <SearchIcon />
                   </InputAdornment>
@@ -40,6 +44,7 @@ const Chats = () => {
               />
             </FormControl>
             <UserList />
+            <Communities />
           </Box>
         </Grid>
 
@@ -47,7 +52,20 @@ const Chats = () => {
           xs={12}
           md={8}
           sx={{ border: "2px solid black", height: "100vh" }}
-        ></Grid>
+        >
+          <div
+            style={{ height: 50, width: "100%", border: "2px solid red" }}
+          ></div>
+          <div style={{}}>
+            <div
+              className="main-chat-box"
+              style={{ border: "2px solid black" }}
+            >
+              Hi
+            </div>
+            <div>Hi</div>
+          </div>
+        </Grid>
       </Grid>
     </Box>
   );

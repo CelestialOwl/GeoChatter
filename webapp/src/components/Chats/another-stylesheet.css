@@ -37,3 +37,6 @@
 .form_generics {
   width: 100%;
 }
+.main-chat-box {
+  height: calc(100vh - 100px);
+}
