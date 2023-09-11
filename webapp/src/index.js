@@ -10,11 +10,16 @@ import Forgot from "./components/Forgot";
 import Chats from "./components/Chats";
 import { Container } from "@mui/material";
 import { CssBaseline } from "@mui/material";
+import SignUp from "./components/Signup";
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <Login />,
+    element: <Signin />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
   },
   {
     path: "/reset-password",
@@ -23,10 +28,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/test",
-    element: <Signin />,
   },
   {
     path: "/chats",
@@ -38,18 +39,19 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <Container maxWidth="xl">
-      <div
-        className="container-login100"
-        style={
-          window.location.pathname === "/test"
-            ? { backgroundImage: "url(bg-01.jpg)" }
-            : {}
-        }
-      >
-        <RouterProvider router={router} />
-      </div>
-    </Container>
+    {/* <Container maxWidth="xl"> */}
+    <div
+      className="container-login100"
+      style={
+        true
+          ? // window.location.pathname === "/test"
+            { backgroundImage: "url(bg-01.jpg)" }
+          : {}
+      }
+    >
+      <RouterProvider router={router} />
+    </div>
+    {/* </Container> */}
     {/* <App /> */}
   </React.StrictMode>
 );

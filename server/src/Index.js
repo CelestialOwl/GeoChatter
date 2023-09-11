@@ -10,16 +10,16 @@ import markLastSeen from "./middlewares/markLastSeen.js";
 import mongoose from "mongoose";
 import { io } from "./utils/socket.js";
 import * as dotenv from "dotenv";
-// import cors from "cors";
+import cors from "cors";
 dotenv.config();
 
 const mongoUri = process.env.MONGO_LOCAL_URL;
 const app = express();
 const httpserver = createServer(app);
 
+app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
-// app.options("*", cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(authRoutes);
@@ -41,6 +41,6 @@ mongoose.connection.on("error", (err) => {
   console.error("Error connecting ", err);
 });
 
-httpserver.listen(process.env.PORT || 3002, () => {
+httpserver.listen(process.env.PORT || 3003, () => {
   // console.log("listening on port 3002");
 });

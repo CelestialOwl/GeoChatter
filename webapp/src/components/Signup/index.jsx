@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "../../Views/Login";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
@@ -7,12 +7,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { AccountCircle, LockOpen } from "@mui/icons-material";
+import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
+import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import "./signin.css";
+import "./signup.css";
 import { Button } from "@mui/material";
-import ChatterApi from "../../API/ChatterAPI";
-import { useNavigate } from "react-router-dom";
+import PhoneInput from "react-phone-input-2";
+// import "react-phone-input-2/lib/style.css";
+import "react-phone-input-2/lib/material.css";
 
 const theme = createTheme({
   typography: {
@@ -20,20 +23,8 @@ const theme = createTheme({
   },
 });
 
-const Signin = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-
-  const navigate = useNavigate();
-
-  async function submitHandler() {
-    const { data } = await ChatterApi.post("/signin", { email, password });
-    localStorage.setItem("jwt", data.token);
-    navigate("/chats");
-    // <Navigate to="chats" />;
-    // if (data.token) {
-    // }
-  }
+const SignUp = () => {
+  const [phone, setPhone] = useState("");
   return (
     <div
       className="p-16"
@@ -49,15 +40,13 @@ const Signin = () => {
         height: 720,
       }}
     >
-      <div className="pb-16 login_title">Login</div>
+      <div className="pb-16 login_title">Sign Up</div>
       <div className="form_title">Username</div>
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <FormControl className="form_generics" variant="standard">
           <Input
             id="email"
-            value={email}
             fullWidth
-            onChange={(e) => setEmail(e.target.value)}
             startAdornment={
               <InputAdornment position="start">
                 <AccountCircle />
@@ -69,26 +58,47 @@ const Signin = () => {
         <FormControl className="form_generics" variant="standard">
           <Input
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
             startAdornment={
               <InputAdornment position="start">
-                <AccountCircle />
+                <KeyOutlinedIcon />
               </InputAdornment>
             }
           />
         </FormControl>
+        {/* <div className="form_title">Phone No</div> */}
+        <FormControl className="form_generics" variant="standard">
+          {/* <Input
+            id="password"
+            startAdornment={
+              <InputAdornment position="start">
+                <PhoneEnabledIcon />
+              </InputAdornment>
+            }
+          > */}
+          <PhoneInput
+            country={"pk"}
+            containerStyle={{}}
+            containerClass="kappachino"
+            inputStyle={{
+              borderTop: "none",
+              borderLeft: "none",
+              borderRight: "none",
+              borderRadius: 0,
+              borderBottom: "1px solid black",
+            }}
+            specialLabel="Phone no"
+            value={phone}
+            onChange={(phone) => setPhone(phone)}
+          />
+          {/* </Input> */}
+        </FormControl>
       </Box>
-      <div className="text-right pt-0.25 pb-4">Forgot password?</div>
-      <Button className="form_button_submit" onClick={submitHandler}>
-        Login
-      </Button>
+      <Button className="form_button_submit">Sign up</Button>
       <div className="text-center pt-12 pb-8">
-        Don't have an account? Sign up
+        Already have an account? Sign in
       </div>
     </div>
   );
 };
 
-export default Signin;
+export default SignUp;
