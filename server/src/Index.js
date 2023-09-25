@@ -6,6 +6,7 @@ import requireAuth from "../src/middlewares/requireAuth.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { createServer } from "http";
 import userRoutes from "./routes/userRoutes.js";
+import userStatusRoutes from "./routes/userStatusRoutes.js";
 import markLastSeen from "./middlewares/markLastSeen.js";
 import mongoose from "mongoose";
 import { io } from "./utils/socket.js";
@@ -26,6 +27,7 @@ app.use(authRoutes);
 app.use(trackRoutes);
 app.use(messageRoutes);
 app.use(userRoutes);
+app.use(userStatusRoutes);
 io.attach(httpserver);
 
 app.get("/", requireAuth, markLastSeen, (req, res) => {

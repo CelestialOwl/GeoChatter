@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Box } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
+import BlockIcon from "@mui/icons-material/Block";
+import { red } from "@mui/material/colors";
+
 const ChatHeader = () => {
+  const [dropdown, setDropdown] = useState(false);
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <div
@@ -41,8 +45,16 @@ const ChatHeader = () => {
         </div>
       </div>
       <div style={{ marginTop: 5 }}>
-        <div style={{ width: 45, height: 40 }}>
-          <MoreVert />
+        <div style={{ width: 45, height: 40, cursor: "pointer" }}>
+          <div className="dropdown" onClick={() => setDropdown(!dropdown)}>
+            <MoreVert />
+            {dropdown && (
+              <div className="dropdown-content" style={{ cursor: "pointer" }}>
+                <BlockIcon sx={{ color: red[500] }} />
+                <span style={{ padding: 8, color: red[500] }}>Block User</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

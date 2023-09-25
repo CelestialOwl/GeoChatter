@@ -1,11 +1,26 @@
 import "./App.css";
 import { io } from "socket.io-client";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const socket = io("http://localhost:3002");
+  const navigate = useNavigate();
+
+  const socket = io("http://localhost:3003");
   useEffect(() => {
-    socket.emit("joinRoom", { username: "Ali", room: "Web" });
+    navigate("/chats");
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      // USER_EMAIL = await AsyncStorage.getItem("email");
+      socket.emit("joinRoom", {
+        username: "Hassan",
+        room: "Web",
+        email: "test",
+      });
+    })();
+    // socket.emit("joinRoom", { username: "Ali", room: "Web" });
     socket.on("connect", () => {
       console.log("connected");
     });

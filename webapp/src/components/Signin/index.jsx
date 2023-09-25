@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Login from "../../Views/Login";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
@@ -13,6 +13,8 @@ import "./signin.css";
 import { Button } from "@mui/material";
 import ChatterApi from "../../API/ChatterAPI";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme({
   typography: {
@@ -25,14 +27,17 @@ const Signin = () => {
   const [password, setPassword] = React.useState("");
 
   const navigate = useNavigate();
+  const notify = (msg) => toast(msg);
 
   async function submitHandler() {
-    const { data } = await ChatterApi.post("/signin", { email, password });
-    localStorage.setItem("jwt", data.token);
-    navigate("/chats");
-    // <Navigate to="chats" />;
-    // if (data.token) {
-    // }
+    try {
+      const res = await ChatterApi.post("/signin", { email, password });
+      localStorage.setItem("jwt", res.data.token);
+      localStorage.setItem("email", email);
+      navigate("/chats");
+    } catch (err) {
+      notify(err.response.data.error);
+    }
   }
   return (
     <div

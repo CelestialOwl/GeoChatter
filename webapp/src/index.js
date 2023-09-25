@@ -11,6 +11,7 @@ import Chats from "./components/Chats";
 import { Container } from "@mui/material";
 import { CssBaseline } from "@mui/material";
 import SignUp from "./components/Signup";
+import Maps from "./components/maps";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,11 @@ const router = createBrowserRouter([
     path: "/chats",
     element: <Chats />,
   },
+  {
+    path: "/maps",
+    element: <Maps />,
+  },
 ]);
-console.log(window.location);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -43,7 +47,7 @@ root.render(
     <div
       className="container-login100"
       style={
-        true
+        false
           ? // window.location.pathname === "/test"
             { backgroundImage: "url(bg-01.jpg)" }
           : {}

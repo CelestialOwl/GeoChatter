@@ -8,6 +8,7 @@ import { getCurrentUser } from "../utils/users.js";
 //  Listen for chatMessage
 export default function ClientMessage(socket) {
   socket.on("chatMessage", async (msg) => {
+    console.log(msg);
     const chatId = mongoose.Types.ObjectId(msg.chatRoomId);
     const User_obj = await Users.findOne({ email: msg.email });
     const user = getCurrentUser(socket.id);

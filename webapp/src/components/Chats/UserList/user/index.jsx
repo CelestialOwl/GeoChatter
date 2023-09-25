@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-const User = () => {
+const User = ({ userData }) => {
   return (
     <div
       style={{
@@ -27,7 +27,7 @@ const User = () => {
             justifyContent: "space-between",
           }}
         >
-          <h5 style={{ flexGrow: 2 }}>Kevin</h5>
+          <h5 style={{ flexGrow: 2 }}>{userData.username}</h5>
           <span style={{ paddingRight: 10 }}>18:13</span>
         </div>
         <p style={{ fontSize: "0.8rem" }}>Hi there how are you?</p>
