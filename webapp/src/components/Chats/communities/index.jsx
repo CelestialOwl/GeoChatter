@@ -7,7 +7,6 @@ const Communities = () => {
       <h1 className="text-blue-800"> Groups </h1>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Community />
-        <Community />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import markLastSeen from "../middlewares/markLastSeen.js";
 import Hobby from "../models/Hobby.js";
+import { calculateDistance } from "../utils/geoLocation.js";
 
 const router = Router();
 
@@ -21,6 +22,29 @@ router.get("/users-list", markLastSeen, async (req, res) => {
   const filteredArray = response.filter(
     (a) => a._id.toString() !== req.user._id.toString()
   );
+  const user = response.filter(
+    (a) => a._id.toString() === req.user._id.toString()
+  );
+  const LoggedUser = user[0];
+  console.log(user[0].latitude);
+  for (let i = 0; i < filteredArray.length; i++) {
+    if (filteredArray[i].latitude && filteredArray[i].longitude) {
+      const distance = calculateDistance(
+        parseInt(LoggedUser.latitude),
+        parseInt(LoggedUser.longitude),
+        parseInt(filteredArray[i].latitude),
+        parseInt(filteredArray[i].longitude)
+      );
+      filteredArray[i].distance = distance;
+    }
+  }
+  const distance = calculateDistance(
+    parseInt(user[0].latitude),
+    parseInt(user[0].longitude),
+    parseInt(filteredArray[0].latitude),
+    parseInt(filteredArray[0].longitude)
+  );
+  console.log("distance of user is", distance);
   res.status(200).send({ status: true, userList: filteredArray });
 });
 

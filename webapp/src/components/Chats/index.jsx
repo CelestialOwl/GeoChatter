@@ -39,6 +39,7 @@ const Chats = () => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
+  const [openChat, setOpenChat] = useState("");
   const [loading, setLoading] = useState(true);
   const [statusModal, setStatusModal] = useState(false);
   const [chatMessage, setChatMessage] = useState("");
@@ -74,7 +75,7 @@ const Chats = () => {
     FetchUserList();
   }, []);
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, background: "white" }}>
       <Grid container spacing={0}>
         <Grid item xs={0} md={3} sx={{ border: "0px solid black" }}>
           <Box sx={{ width: "100%" }} id="kappachino">

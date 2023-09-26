@@ -45,11 +45,12 @@ root.render(
     <CssBaseline />
     {/* <Container maxWidth="xl"> */}
     <div
+      id="root-component"
       className="container-login100"
       style={
-        false
-          ? // window.location.pathname === "/test"
-            { backgroundImage: "url(bg-01.jpg)" }
+        window.location.pathname === "/login" ||
+        window.location.pathname === "/signup"
+          ? { backgroundImage: "url(bg-01.jpg)" }
           : {}
       }
     >

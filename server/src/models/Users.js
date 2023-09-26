@@ -50,6 +50,15 @@ const userSchema = new mongoose.Schema({
   phone: {
     type: String,
   },
+  longitude: {
+    type: String,
+  },
+  latitude: {
+    type: String,
+  },
+  distance: {
+    type: String,
+  },
   location: locationSchema,
   hobbies: [hobbySchema],
   chats: [String],

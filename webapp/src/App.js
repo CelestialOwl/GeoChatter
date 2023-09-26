@@ -12,6 +12,16 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const RootEl = document.getElementById("root-component");
+    if (
+      RootEl &&
+      (window.location.pathname === "/login" ||
+        window.location.pathname === "/signup")
+    )
+      RootEl.style.backgroundImage = "";
+  }, [window.location.pathname]);
+
+  useEffect(() => {
     (async () => {
       // USER_EMAIL = await AsyncStorage.getItem("email");
       socket.emit("joinRoom", {

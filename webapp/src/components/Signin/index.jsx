@@ -13,8 +13,8 @@ import "./signin.css";
 import { Button } from "@mui/material";
 import ChatterApi from "../../API/ChatterAPI";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme({
   typography: {
@@ -27,7 +27,7 @@ const Signin = () => {
   const [password, setPassword] = React.useState("");
 
   const navigate = useNavigate();
-  const notify = (msg) => toast(msg);
+  // const notify = (msg) => toast(msg);
 
   async function submitHandler() {
     try {
@@ -90,7 +90,14 @@ const Signin = () => {
         Login
       </Button>
       <div className="text-center pt-12 pb-8">
-        Don't have an account? Sign up
+        Don't have an account?
+        <span
+          onClick={() => navigate("/signup")}
+          style={{ fontWeight: "bold", cursor: "pointer" }}
+        >
+          {" "}
+          Sign up
+        </span>
       </div>
     </div>
   );

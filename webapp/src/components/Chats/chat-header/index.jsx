@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Grid, Box } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import BlockIcon from "@mui/icons-material/Block";
-import { red } from "@mui/material/colors";
+import { red, grey } from "@mui/material/colors";
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import locationModal from "../../Modals/LocationModal";
 
 const ChatHeader = () => {
   const [dropdown, setDropdown] = useState(false);
@@ -49,9 +51,30 @@ const ChatHeader = () => {
           <div className="dropdown" onClick={() => setDropdown(!dropdown)}>
             <MoreVert />
             {dropdown && (
-              <div className="dropdown-content" style={{ cursor: "pointer" }}>
-                <BlockIcon sx={{ color: red[500] }} />
-                <span style={{ padding: 8, color: red[500] }}>Block User</span>
+              <div>
+                <div className="dropdown-content" style={{ cursor: "pointer" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 50,
+                    }}
+                  >
+                    <div>
+                      <BlockIcon sx={{ color: red[500] }} />
+                      <span style={{ padding: 8, color: red[500] }}>
+                        Block User
+                      </span>
+                    </div>
+                    <div onClick={() => console.log("hi there")}>
+                      <AddLocationAltIcon sx={{ color: grey[500] }} />
+
+                      <span style={{ marginTop: 35, padding: 8 }}>
+                        Location
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
