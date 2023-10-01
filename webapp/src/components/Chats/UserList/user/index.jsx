@@ -1,9 +1,11 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-const User = ({ userData }) => {
+const User = ({ userData, FetchChats }) => {
   return (
     <div
+      onClick={() => FetchChats(userData._id)}
       style={{
+        cursor: "pointer",
         display: "inline-flex",
         flexDirection: "row",
         position: "relative",

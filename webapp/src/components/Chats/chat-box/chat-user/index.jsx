@@ -25,7 +25,9 @@ const ChatUser = ({ name }) => {
           <h5
             style={{}}
             className={
-              name === "Kevin" ? "chat-user-primary" : "chat-user-secondary"
+              name === localStorage.getItem("email")
+                ? "chat-user-primary"
+                : "chat-user-secondary"
             }
           >
             {name}

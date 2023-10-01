@@ -5,11 +5,19 @@ import BlockIcon from "@mui/icons-material/Block";
 import { red, grey } from "@mui/material/colors";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import locationModal from "../../Modals/LocationModal";
+import { url } from "../../../API/ChatterAPI";
 
-const ChatHeader = () => {
+const ChatHeader = ({ activeUser }) => {
+  console.log(activeUser);
   const [dropdown, setDropdown] = useState(false);
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "5px 5px 0px 15px",
+      }}
+    >
       <div
         style={{
           display: "inline-flex",
@@ -17,8 +25,15 @@ const ChatHeader = () => {
           position: "relative",
         }}
       >
-        <div style={{ width: 45, height: 40 }}>
-          <img src="logo192.png" width={45} />
+        <div style={{ width: 45, height: 45 }}>
+          <img
+            src={`${url}/${activeUser.img}`}
+            style={{
+              height: "100%",
+              width: "100%",
+              borderRadius: "45px",
+            }}
+          />
         </div>
         <div
           style={{
@@ -41,7 +56,7 @@ const ChatHeader = () => {
                 marginTop: 5,
               }}
             >
-              Kevin
+              {activeUser.username}
             </h5>
           </div>
         </div>

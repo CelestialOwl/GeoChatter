@@ -6,7 +6,6 @@ import { upload } from "../utils/multer.js";
 const router = Router();
 
 router.post("/create-status", upload.single("image"), async (req, res) => {
-  console.log("router here", req.file);
   try {
     const path = req.file.path;
     const convertedPath = path.replace(/\\/g, "/");

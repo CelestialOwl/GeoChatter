@@ -34,6 +34,9 @@ const Signin = () => {
       const res = await ChatterApi.post("/signin", { email, password });
       localStorage.setItem("jwt", res.data.token);
       localStorage.setItem("email", email);
+      const userProfile = await ChatterApi.post("/fetch-profile", { email });
+      localStorage.setItem("username", userProfile.data.user.username);
+      localStorage.setItem("profile", JSON.stringify(userProfile.data.user));
       navigate("/chats");
     } catch (err) {
       notify(err.response.data.error);

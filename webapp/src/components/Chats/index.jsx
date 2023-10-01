@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Login from "../../Views/Login";
 import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
@@ -28,6 +28,9 @@ import api from "../../API/ChatterAPI";
 import UploadStatusModal from "../Modals/uploadStatus";
 import { useNavigate } from "react-router-dom";
 
+const email = localStorage.getItem("email");
+import SocketServices from "../../utils/SocketServices";
+
 const theme = createTheme({
   typography: {
     // fontFamily: ["Poppins-Regular"].join(","),
@@ -42,7 +45,12 @@ const Chats = () => {
   const [openChat, setOpenChat] = useState("");
   const [loading, setLoading] = useState(true);
   const [statusModal, setStatusModal] = useState(false);
-  const [chatMessage, setChatMessage] = useState("");
+  const [chatId, setRoomId] = useState();
+  const [activeUser, setActiveUser] = useState();
+
+  const [messages, SetChatMessages] = useState([]);
+
+  const chatMessageRef = useRef();
 
   const handleStatusOpen = () => setStatusModal(true);
   const handleStatusClose = () => setStatusModal(false);
@@ -50,7 +58,6 @@ const Chats = () => {
   const FetchUserList = async () => {
     try {
       const respnose = await api.get("/users-list");
-      console.log(respnose.data.status);
       setUsers(respnose.data.userList);
     } catch (err) {
       if (err.response.status === 401) {
@@ -62,15 +69,50 @@ const Chats = () => {
   };
 
   const sendMessageHandler = () => {
-    console.log(chatMessage);
+    console.log(chatMessageRef.current.children[0].value);
     socket.emit("chatMessage", {
-      field: chatMessage,
-      chatRoomId: "6469c3d8326e9abda5cb0c67",
-      email: "Test",
+      field: chatMessageRef.current.children[0].value,
+      chatRoomId: chatId,
+      email: email,
     });
-    // socket.emit(chatMessage);
   };
 
+  const FetchChatHandler = async (id) => {
+    const res = await api.post("/create-room", { recipient: { _id: id } });
+    if (res.data.message === "chat already exist!") {
+      setActiveUser(res.data.user);
+      setRoomId(res.data.chatId);
+      const chats = await api.post("/fetch-messages", {
+        roomId: res.data.chatId,
+      });
+      SetChatMessages(chats.data);
+    }
+  };
+
+  useEffect(() => {
+    SocketServices.connect("http://localhost:3003");
+
+    const socket = SocketServices.getSocket();
+
+    if (socket) {
+      socket.on("message", (msg) => {
+        console.log("received data", msg);
+      });
+    }
+
+    // socket.on("message", (msg) => {
+    //   console.log(msg);
+    // });
+    // FetchUserList();
+    // return () => {
+    //   socket.disconnect();
+    //   console.log("unmounting");
+    // };\
+
+    return () => {
+      SocketServices.disconnect();
+    };
+  }, []);
   useEffect(() => {
     FetchUserList();
   }, []);
@@ -125,7 +167,7 @@ const Chats = () => {
                 }
               />
             </FormControl>
-            <UserList users={users} />
+            <UserList users={users} FetchChats={FetchChatHandler} />
             <Communities />
           </Box>
         </Grid>
@@ -136,16 +178,16 @@ const Chats = () => {
           md={9}
           sx={{ border: "2px solid black", height: "100vh" }}
         >
-          <div style={{ height: 50, width: "100%" }}>
+          <div style={{ height: 60, width: "100%" }}>
             {" "}
-            <ChatHeader />
+            {activeUser && <ChatHeader activeUser={activeUser} />}
           </div>
           <div style={{}}>
             <div
               className="main-chat-box"
               style={{ border: "2px solid black" }}
             >
-              <ChatBox />
+              <ChatBox messages={messages} />
             </div>
             <Box sx={{ width: "100%", display: "flex" }}>
               <div
@@ -157,12 +199,24 @@ const Chats = () => {
                 <FormControl variant="standard" fullWidth>
                   <Input
                     style={{ height: 50 }}
-                    onChange={(e) => setChatMessage(e.target.value)}
-                    value={chatMessage}
+                    ref={chatMessageRef}
+                    onSubmit={(e) => console.log(e)}
                     disableUnderline
-                    id="input-with-icon-adornment"
+                    id="input-with-icon-adornment1"
                     sx={{ fontSize: "19px", paddingLeft: 2 }}
                   />
+                  <button
+                    type="submit"
+                    onClick={() => sendMessageHandler()}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      cursor: "pointer",
+                      paddingTop: 5,
+                    }}
+                  >
+                    <SendIcon />
+                  </button>
                 </FormControl>
               </div>
               <div

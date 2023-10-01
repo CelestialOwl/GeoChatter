@@ -18,7 +18,16 @@ router.post("/fetch-profile", markLastSeen, async (req, res) => {
 });
 
 router.get("/users-list", markLastSeen, async (req, res) => {
-  const response = await User.find({});
+  const response = await User.find({})
+    .select({
+      email: 1,
+      username: 1,
+      latitude: 1,
+      longitude: 1,
+      chats: 1,
+      img: 1,
+    })
+    .exec();
   const filteredArray = response.filter(
     (a) => a._id.toString() !== req.user._id.toString()
   );
