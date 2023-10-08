@@ -27,9 +27,12 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import api from "../../API/ChatterAPI";
 import UploadStatusModal from "../Modals/uploadStatus";
 import { useNavigate } from "react-router-dom";
+import SocketServices from "../../utils/SocketServices";
+import BasicMenu from "../ui-components/chats/dropdown";
+import CommunityModal from "../Modals/Community/CommunityModal";
+import CreateCommunityModal from "../Modals/Community/CreateCommModal";
 
 const email = localStorage.getItem("email");
-import SocketServices from "../../utils/SocketServices";
 
 const theme = createTheme({
   typography: {
@@ -42,18 +45,28 @@ const Chats = () => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  console.log(rooms);
   const [openChat, setOpenChat] = useState("");
   const [loading, setLoading] = useState(true);
-  const [statusModal, setStatusModal] = useState(false);
   const [chatId, setRoomId] = useState();
   const [activeUser, setActiveUser] = useState();
 
   const [messages, SetChatMessages] = useState([]);
-
   const chatMessageRef = useRef();
 
+  // Modals
+  const [statusModal, setStatusModal] = useState(false);
+  const [communityModal, setCommunityModal] = useState(false);
+  const [createCommunityModal, setCreateCommunity] = useState(false);
+
+  //Modal Functions
   const handleStatusOpen = () => setStatusModal(true);
   const handleStatusClose = () => setStatusModal(false);
+  const handleCommunityOpen = () => setCommunityModal(true);
+  const handleCommunityClose = () => setCommunityModal(true);
+  const handleCreateCommunityOpen = () => setCreateCommunity(true);
+  const handleCreateCommunityClose = () => setCreateCommunity(true);
 
   const FetchUserList = async () => {
     try {
@@ -89,6 +102,12 @@ const Chats = () => {
     }
   };
 
+  const fetchCommunities = async () => {
+    const response = await api.post("/get-community");
+    console.log(response.data.communities);
+    setRooms(response.data.communities);
+  };
+
   useEffect(() => {
     SocketServices.connect("http://localhost:3003");
 
@@ -115,6 +134,7 @@ const Chats = () => {
   }, []);
   useEffect(() => {
     FetchUserList();
+    fetchCommunities();
   }, []);
   return (
     <Box sx={{ flexGrow: 1, background: "white" }}>
@@ -149,11 +169,14 @@ const Chats = () => {
                 >
                   <CameraAltIcon sx={{ cursor: "pointer" }} />
                 </div>
-                <div style={{ width: 45, height: 40 }}>
+                <div
+                  onClick={handleCreateCommunityOpen}
+                  style={{ width: 45, height: 40, cursor: "pointer" }}
+                >
                   <GroupsIcon />
                 </div>
-                <div style={{ width: 45, height: 40 }}>
-                  <MoreVert />
+                <div style={{ width: 45, height: 40, cursor: "pointer" }}>
+                  <BasicMenu />
                 </div>
               </div>
             </div>
@@ -168,7 +191,7 @@ const Chats = () => {
               />
             </FormControl>
             <UserList users={users} FetchChats={FetchChatHandler} />
-            <Communities />
+            <Communities communities={rooms} />
           </Box>
         </Grid>
 
@@ -235,6 +258,14 @@ const Chats = () => {
         </Grid>
       </Grid>
       <UploadStatusModal open={statusModal} handleClose={handleStatusClose} />
+      <CommunityModal
+        open={communityModal}
+        handleClose={handleCommunityClose}
+      />
+      <CreateCommunityModal
+        open={createCommunityModal}
+        handleClose={handleCreateCommunityClose}
+      />
     </Box>
   );
 };

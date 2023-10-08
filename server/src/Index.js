@@ -6,6 +6,7 @@ import requireAuth from "../src/middlewares/requireAuth.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { createServer } from "http";
 import userRoutes from "./routes/userRoutes.js";
+import communityRoutes from "./routes/communityRoutes.js";
 import userStatusRoutes from "./routes/userStatusRoutes.js";
 import markLastSeen from "./middlewares/markLastSeen.js";
 import mongoose from "mongoose";
@@ -28,6 +29,7 @@ app.use(trackRoutes);
 app.use(messageRoutes);
 app.use(userRoutes);
 app.use(userStatusRoutes);
+app.use(communityRoutes);
 io.attach(httpserver);
 
 app.get("/", requireAuth, markLastSeen, (req, res) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-const Community = () => {
+const Community = ({ room }) => {
   return (
     <div
       style={{
@@ -27,7 +27,7 @@ const Community = () => {
             justifyContent: "space-between",
           }}
         >
-          <h5 style={{ flexGrow: 2 }}>Cricket</h5>
+          <h5 style={{ flexGrow: 2 }}>{room.name}</h5>
           <span style={{ paddingRight: 10 }}>18:13</span>
         </div>
         <p style={{ fontSize: "0.8rem" }}>Greate game</p>
