@@ -38,6 +38,9 @@ const communitySchema = new mongoose.Schema({
   is_disbanded: {
     type: Boolean,
   },
+  description: {
+    type: String,
+  },
   users: [userSchema],
   messages: [messageSchema],
 });

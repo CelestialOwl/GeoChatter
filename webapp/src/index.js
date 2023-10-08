@@ -5,12 +5,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Views/Login";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Signin from "./components/Signin/index";
-import Forgot from "./components/Forgot";
-import Chats from "./components/Chats";
+import Signin from "./pages/Signin/index";
+import Forgot from "./pages/Forgot";
+import Chats from "./pages/Chats";
 import { Container } from "@mui/material";
 import { CssBaseline } from "@mui/material";
-import SignUp from "./components/Signup";
+import SignUp from "./pages/Signup";
 import Maps from "./components/maps";
 
 const router = createBrowserRouter([

@@ -16,8 +16,10 @@ router.post("/create-community", requireAuth, async (req, res) => {
 
   const communityRoom = await new Community({
     name: req.body.name,
+    description: req.body.description,
     private: req.body.type,
     users: [userAdmin],
+    is_disbanded: false,
   });
   await communityRoom.save();
   res.status(200).send({
@@ -28,7 +30,7 @@ router.post("/create-community", requireAuth, async (req, res) => {
 
 router.post("/get-community", requireAuth, async (req, res) => {
   // Find all records where "private" is false
-  Community.find({ private: true }, (err, records) => {
+  Community.find({ private: false, is_disbanded: false }, (err, records) => {
     if (err) {
       console.error(err);
       return;

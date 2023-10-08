@@ -1,9 +1,11 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-const Community = ({ room }) => {
+const Community = ({ room, setActiveRoom }) => {
   return (
     <div
+      onClick={() => setActiveRoom("room", room)}
       style={{
+        cursor: "pointer",
         display: "inline-flex",
         flexDirection: "row",
         position: "relative",

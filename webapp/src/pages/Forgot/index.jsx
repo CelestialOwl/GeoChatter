@@ -49,7 +49,9 @@ const Forgot = () => {
           />
         </FormControl>
       </Box>
-      <Button style={{marginTop: 10}} className="form_button_submit">Submit</Button>
+      <Button style={{ marginTop: 10 }} className="form_button_submit">
+        Submit
+      </Button>
     </div>
   );
 };

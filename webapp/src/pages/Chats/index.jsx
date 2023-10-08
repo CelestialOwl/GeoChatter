@@ -3,7 +3,7 @@ import Login from "../../Views/Login";
 import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
 import { AccountCircle, LockOpen, MoreVert } from "@mui/icons-material";
-import { createTheme } from "@mui/material";
+import { Divider, createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { Button } from "@mui/material";
 import { io } from "socket.io-client";
@@ -25,12 +25,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import api from "../../API/ChatterAPI";
-import UploadStatusModal from "../Modals/uploadStatus";
+import UploadStatusModal from "../../components/Modals/uploadStatus";
 import { useNavigate } from "react-router-dom";
 import SocketServices from "../../utils/SocketServices";
-import BasicMenu from "../ui-components/chats/dropdown";
-import CommunityModal from "../Modals/Community/CommunityModal";
-import CreateCommunityModal from "../Modals/Community/CreateCommModal";
+import BasicMenu from "../../components/chats/dropdown";
+import CommunityModal from "../../components/Modals/Community/CommunityModal";
+import CreateCommunityModal from "../../components/Modals/Community/CreateCommModal";
+import CommunityHeader from "./communities/CommunityHeader";
 
 const email = localStorage.getItem("email");
 
@@ -51,6 +52,9 @@ const Chats = () => {
   const [loading, setLoading] = useState(true);
   const [chatId, setRoomId] = useState();
   const [activeUser, setActiveUser] = useState();
+
+  //Community Chat
+  const [activeRoom, setActiveRoom] = useState();
 
   const [messages, SetChatMessages] = useState([]);
   const chatMessageRef = useRef();
@@ -78,6 +82,13 @@ const Chats = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleActiveChatBox = (type, payload) => {
+    if (type === "room") {
+      setActiveRoom(payload);
+      setActiveUser(null);
     }
   };
 
@@ -139,13 +150,12 @@ const Chats = () => {
   return (
     <Box sx={{ flexGrow: 1, background: "white" }}>
       <Grid container spacing={0}>
-        <Grid item xs={0} md={3} sx={{ border: "0px solid black" }}>
+        <Grid item xs={0} md={3} sx={{ background: "#e8e9e99e" }}>
           <Box sx={{ width: "100%" }} id="kappachino">
             <div
               style={{
                 height: 50,
                 width: "100%",
-                border: "1px solid purple",
                 display: "flex",
                 justifyContent: "space-between",
               }}
@@ -180,8 +190,19 @@ const Chats = () => {
                 </div>
               </div>
             </div>
-            <FormControl variant="standard" fullWidth>
+            <FormControl
+              sx={{ padding: "5px 10px 5px 10px" }}
+              variant="standard"
+              fullWidth
+            >
               <Input
+                sx={{
+                  height: "40px",
+                  background: "white",
+                  paddingLeft: 4,
+                  borderRadius: "50px",
+                  fontSize: 20,
+                }}
                 id="input-with-icon-adornment"
                 endAdornment={
                   <InputAdornment position="start">
@@ -191,27 +212,29 @@ const Chats = () => {
               />
             </FormControl>
             <UserList users={users} FetchChats={FetchChatHandler} />
-            <Communities communities={rooms} />
+            <Communities
+              setActiveRoom={handleActiveChatBox}
+              communities={rooms}
+            />
           </Box>
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          md={9}
-          sx={{ border: "2px solid black", height: "100vh" }}
-        >
+        <Grid item xs={12} md={9} sx={{ height: "100vh" }}>
           <div style={{ height: 60, width: "100%" }}>
             {" "}
-            {activeUser && <ChatHeader activeUser={activeUser} />}
+            {activeUser ? (
+              <ChatHeader activeUser={activeUser} />
+            ) : activeRoom ? (
+              <CommunityHeader activeRoom={activeRoom} />
+            ) : null}
           </div>
+          <Divider sx={{ borderColor: "rgba(0, 0, 0, 0.62)" }} />
+
           <div style={{}}>
-            <div
-              className="main-chat-box"
-              style={{ border: "2px solid black" }}
-            >
+            <div className="main-chat-box" style={{}}>
               <ChatBox messages={messages} />
             </div>
+            <Divider sx={{ borderColor: "rgba(0, 0, 0, 0.62)" }} />
             <Box sx={{ width: "100%", display: "flex" }}>
               <div
                 style={{
@@ -228,7 +251,7 @@ const Chats = () => {
                     id="input-with-icon-adornment1"
                     sx={{ fontSize: "19px", paddingLeft: 2 }}
                   />
-                  <button
+                  {/* <button
                     type="submit"
                     onClick={() => sendMessageHandler()}
                     style={{
@@ -239,7 +262,7 @@ const Chats = () => {
                     }}
                   >
                     <SendIcon />
-                  </button>
+                  </button> */}
                 </FormControl>
               </div>
               <div

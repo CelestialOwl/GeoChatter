@@ -4,7 +4,7 @@ import { MoreVert } from "@mui/icons-material";
 import BlockIcon from "@mui/icons-material/Block";
 import { red, grey } from "@mui/material/colors";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
-import locationModal from "../../Modals/LocationModal";
+import locationModal from "../../../components/Modals/LocationModal";
 import { url } from "../../../API/ChatterAPI";
 
 const ChatHeader = ({ activeUser }) => {
