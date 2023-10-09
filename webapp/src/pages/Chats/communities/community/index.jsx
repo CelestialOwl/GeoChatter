@@ -1,5 +1,9 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
+import { grey } from "@mui/material/colors";
+import { url } from "../../../../API/ChatterAPI";
+
 const Community = ({ room, setActiveRoom }) => {
   return (
     <div
@@ -12,7 +16,20 @@ const Community = ({ room, setActiveRoom }) => {
       }}
     >
       <div style={{ width: 60, height: 40 }}>
-        <img src="logo192.png" width={60} />
+        {room.img ? (
+          <img
+            src={`${url}/${room.img}`}
+            style={{
+              height: "100%",
+              width: "100%",
+              borderRadius: "45px",
+            }}
+          />
+        ) : (
+          <GroupIcon
+            style={{ height: "45px", width: "45px", color: grey[800] }}
+          />
+        )}
       </div>
       <div
         style={{

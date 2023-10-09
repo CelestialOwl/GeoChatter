@@ -31,6 +31,7 @@ const ChatHeader = ({ activeUser }) => {
             style={{
               height: "100%",
               width: "100%",
+              objectFit: "cover",
               borderRadius: "45px",
             }}
           />

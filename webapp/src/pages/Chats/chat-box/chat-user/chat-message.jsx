@@ -10,7 +10,13 @@ const ChatMessage = ({ message, time }) => {
       }}
     >
       <div
-        style={{ width: 40, height: 40, marginTop: 5 }}
+        style={{
+          width: 60,
+          height: 40,
+          marginTop: 5,
+          fontSize: 12,
+          color: "#454545c9",
+        }}
         className="chat-message-time"
       >
         {time}
@@ -20,12 +26,12 @@ const ChatMessage = ({ message, time }) => {
           display: "flex",
           flexGrow: 1,
           flexDirection: "column",
-          marginLeft: 20,
+          marginLeft: 10,
           marginTop: 5,
         }}
       >
         <div style={{}}>
-          <h5 style={{}} className="chat-message">
+          <h5 style={{ fontSize: 16 }} className="chat-message">
             {message}
           </h5>
         </div>

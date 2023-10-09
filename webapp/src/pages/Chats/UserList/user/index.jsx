@@ -1,5 +1,8 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
+import { url } from "../../../../API/ChatterAPI";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import { grey } from "@mui/material/colors";
 const User = ({ userData, FetchChats }) => {
   return (
     <div
@@ -12,7 +15,24 @@ const User = ({ userData, FetchChats }) => {
       }}
     >
       <div style={{ width: 60, height: 40 }}>
-        <img src="logo192.png" width={60} />
+        {userData.img ? (
+          <div>
+            <img
+              src={`${url}/${userData.img}`}
+              style={{
+                objectFit: "cover",
+                height: "45px",
+                width: "45px",
+                borderRadius: "45px",
+              }}
+            />
+          </div>
+        ) : (
+          <AccountCircle
+            sx={{ height: "50px", width: "50px", color: grey[800] }}
+          />
+        )}
+        {/* <img src="logo192.png" width={60} /> */}
       </div>
       <div
         style={{

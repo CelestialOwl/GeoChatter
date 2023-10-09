@@ -36,7 +36,6 @@ router.post("/get-community", requireAuth, async (req, res) => {
       return;
     }
     res.status(200).send({ status: true, communities: records });
-    console.log(records);
     return;
   });
 });
@@ -46,7 +45,6 @@ router.post("/delete-community", requireAuth, async (req, res) => {
     { _id: req.body.CommunityId },
     { is_disbanded: true },
     (err, res) => {
-      console.log(res);
       console.log(err);
     }
   );

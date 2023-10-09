@@ -6,6 +6,7 @@ import { red, grey } from "@mui/material/colors";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { url } from "../../../../API/ChatterAPI";
 import MemberListDrawser from "../../../../components/drawers/rightCommunityDrawer";
+import GroupIcon from "@mui/icons-material/Group";
 
 const CommunityHeader = ({ activeRoom }) => {
   console.log(activeRoom);
@@ -26,14 +27,20 @@ const CommunityHeader = ({ activeRoom }) => {
         }}
       >
         <div style={{ width: 45, height: 45 }}>
-          {/* <img
-            src={`${url}/${activeRoom.img}`}
-            style={{
-              height: "100%",
-              width: "100%",
-              borderRadius: "45px",
-            }}
-          /> */}
+          {activeRoom.img ? (
+            <img
+              src={`${url}/${activeRoom.img}`}
+              style={{
+                height: "100%",
+                width: "100%",
+                borderRadius: "45px",
+              }}
+            />
+          ) : (
+            <GroupIcon
+              style={{ height: "45px", width: "45px", color: grey[800] }}
+            />
+          )}
         </div>
         <div
           style={{

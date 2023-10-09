@@ -3,7 +3,7 @@ import Login from "../../Views/Login";
 import Input from "@mui/material/Input";
 import TextField from "@mui/material/TextField";
 import { AccountCircle, LockOpen, MoreVert } from "@mui/icons-material";
-import { Divider, createTheme } from "@mui/material";
+import { Divider, colors, createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { Button } from "@mui/material";
 import { io } from "socket.io-client";
@@ -32,6 +32,9 @@ import BasicMenu from "../../components/chats/dropdown";
 import CommunityModal from "../../components/Modals/Community/CommunityModal";
 import CreateCommunityModal from "../../components/Modals/Community/CreateCommModal";
 import CommunityHeader from "./communities/CommunityHeader";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { grey, pink } from "@mui/material/colors";
+import { url } from "../../API/ChatterAPI";
 
 const email = localStorage.getItem("email");
 
@@ -41,13 +44,30 @@ const theme = createTheme({
   },
 });
 
+let userImg;
+const localData = localStorage.getItem("profile");
+if (localData) {
+  const myProfile = JSON.parse(localData);
+  userImg = myProfile.img;
+}
+
 const Chats = () => {
-  const socket = io("http://localhost:3003");
+  const socketURL = "http://localhost:3003";
   const navigate = useNavigate();
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io(socketURL);
+    newSocket.on("connect", (socket) => {
+      console.log("socket connected", socket);
+    });
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
 
   const [users, setUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
-  console.log(rooms);
   const [openChat, setOpenChat] = useState("");
   const [loading, setLoading] = useState(true);
   const [chatId, setRoomId] = useState();
@@ -57,6 +77,7 @@ const Chats = () => {
   const [activeRoom, setActiveRoom] = useState();
 
   const [messages, SetChatMessages] = useState([]);
+  console.log(messages);
   const chatMessageRef = useRef();
 
   // Modals
@@ -93,12 +114,12 @@ const Chats = () => {
   };
 
   const sendMessageHandler = () => {
-    console.log(chatMessageRef.current.children[0].value);
     socket.emit("chatMessage", {
       field: chatMessageRef.current.children[0].value,
       chatRoomId: chatId,
       email: email,
     });
+    chatMessageRef.current.children[0].value = "";
   };
 
   const FetchChatHandler = async (id) => {
@@ -113,9 +134,10 @@ const Chats = () => {
     }
   };
 
+  const appendCurrentMessage = (msg) => {};
+
   const fetchCommunities = async () => {
     const response = await api.post("/get-community");
-    console.log(response.data.communities);
     setRooms(response.data.communities);
   };
 
@@ -126,31 +148,32 @@ const Chats = () => {
 
     if (socket) {
       socket.on("message", (msg) => {
-        console.log("received data", msg);
+        console.log(messages);
+        SetChatMessages([...messages, msg]);
       });
     }
-
-    // socket.on("message", (msg) => {
-    //   console.log(msg);
-    // });
-    // FetchUserList();
-    // return () => {
-    //   socket.disconnect();
-    //   console.log("unmounting");
-    // };\
 
     return () => {
       SocketServices.disconnect();
     };
-  }, []);
+  }, [socket, messages]);
   useEffect(() => {
     FetchUserList();
     fetchCommunities();
   }, []);
+
+  useEffect(() => {
+    SetChatMessages([]);
+  }, [activeRoom, activeUser]);
   return (
     <Box sx={{ flexGrow: 1, background: "white" }}>
       <Grid container spacing={0}>
-        <Grid item xs={0} md={3} sx={{ background: "#e8e9e99e" }}>
+        <Grid
+          item
+          xs={0}
+          md={3}
+          sx={{ background: "#e8e9e99e", paddingLeft: 1.5 }}
+        >
           <Box sx={{ width: "100%" }} id="kappachino">
             <div
               style={{
@@ -162,15 +185,32 @@ const Chats = () => {
             >
               <div
                 style={{
-                  width: 45,
-                  height: 45,
-                  border: "1px solid black",
-                  borderRadius: 50,
-                  padding: 3,
+                  width: 50,
+                  height: 50,
+                  // border: "1px solid black",
+                  borderRadius: 100,
+                  padding: 0,
                   // paddingBottom: 10,
                 }}
               >
-                <img src="logo192.png" width={45} />
+                {userImg ? (
+                  <div>
+                    <img
+                      src={`${url}/${userImg}`}
+                      style={{
+                        objectFit: "cover",
+                        height: "50px",
+                        width: "50px",
+                        borderRadius: "50px",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <AccountCircle
+                    sx={{ height: "50px", width: "50px", color: grey[700] }}
+                  />
+                )}
+                {/* <img src="logo192.png" width={45} /> */}
               </div>
               <div style={{ marginTop: 5, display: "flex" }}>
                 <div
@@ -238,31 +278,28 @@ const Chats = () => {
             <Box sx={{ width: "100%", display: "flex" }}>
               <div
                 style={{
-                  height: 50,
+                  height: 40,
                   width: "90%",
+                  padding: "2px 5px 0px 5px",
                 }}
               >
-                <FormControl variant="standard" fullWidth>
+                <FormControl
+                  style={{ padding: 5 }}
+                  variant="standard"
+                  fullWidth
+                >
                   <Input
-                    style={{ height: 50 }}
+                    style={{
+                      height: 40,
+                      background: "#e8e9e99e",
+                      padding: 20,
+                      borderRadius: 15,
+                    }}
                     ref={chatMessageRef}
-                    onSubmit={(e) => console.log(e)}
                     disableUnderline
                     id="input-with-icon-adornment1"
                     sx={{ fontSize: "19px", paddingLeft: 2 }}
                   />
-                  {/* <button
-                    type="submit"
-                    onClick={() => sendMessageHandler()}
-                    style={{
-                      width: 50,
-                      height: 50,
-                      cursor: "pointer",
-                      paddingTop: 5,
-                    }}
-                  >
-                    <SendIcon />
-                  </button> */}
                 </FormControl>
               </div>
               <div
@@ -271,7 +308,7 @@ const Chats = () => {
                   width: 50,
                   height: 50,
                   cursor: "pointer",
-                  paddingTop: 5,
+                  paddingTop: 12,
                 }}
               >
                 <SendIcon />

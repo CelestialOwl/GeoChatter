@@ -17,13 +17,9 @@ const ChatBox = ({ messages }) => {
           <div key={i}>
             <ChatUser name={m.username} />
             <ChatMessage message={m.text} time={m.time} />
-            {/* <ChatMessage message="Long time, no see" time={"00:23"} /> */}
           </div>
         );
       })}
-      {/* <ChatUser name="Ali" />
-      <ChatMessage message="Hi" time={"00:30"} />
-      <ChatMessage message="Great to see you" time={"00:31"} /> */}
     </div>
   );
 };
