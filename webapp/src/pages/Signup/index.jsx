@@ -16,6 +16,7 @@ import { Button } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 // import "react-phone-input-2/lib/style.css";
 import "react-phone-input-2/lib/material.css";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   typography: {
@@ -25,6 +26,7 @@ const theme = createTheme({
 
 const SignUp = () => {
   const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
   return (
     <div
       className="p-16"
@@ -95,7 +97,13 @@ const SignUp = () => {
       </Box>
       <Button className="form_button_submit">Sign up</Button>
       <div className="text-center pt-12 pb-8">
-        Already have an account? Sign in
+        Already have an account?{" "}
+        <span
+          onClick={() => navigate("/login")}
+          style={{ fontWeight: "bold", cursor: "pointer" }}
+        >
+          Sign in
+        </span>
       </div>
     </div>
   );

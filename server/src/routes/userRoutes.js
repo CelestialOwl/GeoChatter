@@ -77,7 +77,11 @@ router.post("/save-hobby", markLastSeen, async (req, res) => {
 
 router.post("/fetch-hobbies", markLastSeen, async (req, res) => {
   const response = await User.findOne({ email: "new" });
-  res.status(200).send({ status: true, hobbies: response.hobbies });
+  if (response) {
+    res.status(200).send({ status: true, hobbies: response.hobbies });
+  } else {
+    res.status(400).send({ status: false, message: "something went wrong" });
+  }
 });
 
 router.post("/edit-profile", upload.single("image"), async (req, res) => {

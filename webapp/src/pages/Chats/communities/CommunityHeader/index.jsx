@@ -69,9 +69,9 @@ const CommunityHeader = ({ activeRoom }) => {
         </div>
       </div>
       <div style={{ marginTop: 5 }}>
-        <div style={{ width: 45, height: 40, cursor: "pointer" }}>hi</div>
+        {/* <div style={{ width: 45, height: 40, cursor: "pointer" }}>hi</div> */}
+        <MemberListDrawser users={activeRoom.users} />
       </div>
-      <MemberListDrawser users={activeRoom.users} />
     </div>
   );
 };

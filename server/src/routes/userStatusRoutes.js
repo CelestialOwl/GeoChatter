@@ -29,7 +29,7 @@ router.post("/fetch-user-status", async (req, res) => {
 
   Status.find({
     $and: [
-      { userId: userId }, // Match the specific userID
+      // Match the specific userID
       { time: { $gte: twentyFourHoursAgo } }, // Match records with "time" greater than or equal to 24 hours ago
     ],
   })

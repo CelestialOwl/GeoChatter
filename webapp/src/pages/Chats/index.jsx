@@ -89,9 +89,9 @@ const Chats = () => {
   const handleStatusOpen = () => setStatusModal(true);
   const handleStatusClose = () => setStatusModal(false);
   const handleCommunityOpen = () => setCommunityModal(true);
-  const handleCommunityClose = () => setCommunityModal(true);
+  const handleCommunityClose = () => setCommunityModal(false);
   const handleCreateCommunityOpen = () => setCreateCommunity(true);
-  const handleCreateCommunityClose = () => setCreateCommunity(true);
+  const handleCreateCommunityClose = () => setCreateCommunity(false);
 
   const FetchUserList = async () => {
     try {
@@ -133,8 +133,6 @@ const Chats = () => {
       SetChatMessages(chats.data);
     }
   };
-
-  const appendCurrentMessage = (msg) => {};
 
   const fetchCommunities = async () => {
     const response = await api.post("/get-community");

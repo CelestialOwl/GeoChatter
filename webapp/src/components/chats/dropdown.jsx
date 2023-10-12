@@ -19,7 +19,8 @@ export default function BasicMenu() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login");
+    window.location.href = "/login";
+    // navigate("/login");
   };
 
   return (

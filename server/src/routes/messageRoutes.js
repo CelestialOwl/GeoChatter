@@ -23,6 +23,7 @@ router.post("/fetch-messages", async (req, res) => {
 router.post("/create-room", async (req, res) => {
   const requestUser = await Users.findOne({ _id: req.user._id });
   const targetUser = await Users.findOne({ _id: req.body.recipient._id });
+  console.log("user", req.user._id, req.body.recipient._id);
   try {
     if (requestUser.chats.includes(req.body.recipient._id.toString())) {
       ChatRoom.findOne(
@@ -32,6 +33,7 @@ router.post("/create-room", async (req, res) => {
           },
         },
         (err, docs) => {
+          console.log(err, docs);
           if (err) {
           } else {
             if (docs !== null) {
@@ -64,7 +66,9 @@ router.post("/create-room", async (req, res) => {
             chats: req.body.recipient._id.toString(),
           },
         },
-        (err, data) => {}
+        (err, data) => {
+          console.log("user1", err, data);
+        }
       );
       Users.findOneAndUpdate(
         { _id: req.body.recipient._id },
@@ -73,7 +77,9 @@ router.post("/create-room", async (req, res) => {
             chats: req.user._id.toString(),
           },
         },
-        (err, data) => {}
+        (err, data) => {
+          console.log("user2", err, data);
+        }
       );
     }
   } catch (err) {
