@@ -10,7 +10,7 @@ router.use(requireAuth);
 
 router.post("/create-community", requireAuth, async (req, res) => {
   const userAdmin = {
-    _id: mongoose.Types.ObjectId(req.user._id),
+    userId: mongoose.Types.ObjectId(req.user._id),
     is_mod: true,
   };
 
@@ -35,7 +35,73 @@ router.post("/get-community", requireAuth, async (req, res) => {
       console.error(err);
       return;
     }
-    res.status(200).send({ status: true, communities: records });
+
+    let userDetails;
+
+    Community.aggregate(
+      [
+        {
+          $lookup: {
+            from: "users", // The name of the 'User' collection in the database
+            localField: "users.userId",
+            foreignField: "_id",
+            as: "userDetails",
+          },
+        },
+        // {
+        //   $unwind: {
+        //     path: "$userDetails",
+        //     preserveNullAndEmptyArrays: true,
+        //   },
+        // },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            private: 1,
+            is_disbanded: 1,
+            description: 1,
+            users: 1,
+            messages: 1,
+
+            // Include other fields from the 'CommunityMember' collection
+            "userDetails.username": 1,
+            "userDetails.email": 1,
+            "userDetails.img": 1,
+            "userDetails._id": 1,
+            // Include other user fields as needed
+          },
+        },
+      ],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        const filterUser = (user, communityUser) => {
+          console.log(user, communityUser, "good");
+          const userDetail = communityUser.find(
+            (u) => u._id.toString() === user.userId.toString()
+          );
+          console.log("uyser response", userDetail);
+          if (userDetail) {
+            return userDetail;
+          } else {
+            return null;
+          }
+        };
+
+        // 'results' will contain the data with user details joined to each community member
+        results.map((community) => {
+          community.users.map((user) => {
+            user.details = filterUser(user, community.userDetails);
+          });
+        });
+        res.status(200).send({ status: true, communities: results });
+        return;
+      }
+    );
+
     return;
   });
 });

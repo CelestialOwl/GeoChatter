@@ -59,6 +59,7 @@ export default function MemberListDrawser({ users }) {
           <MoreVert />
         </Button>
         <Drawer anchor={"right"} open={state} onClose={toggleDrawer()}>
+          <h1>Memebers</h1>
           {list()}
         </Drawer>
       </React.Fragment>

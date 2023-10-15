@@ -35,6 +35,7 @@ import CommunityHeader from "./communities/CommunityHeader";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { grey, pink } from "@mui/material/colors";
 import { url } from "../../API/ChatterAPI";
+import UserProfileModal from "../../components/Modals/UserProfileModal";
 
 const email = localStorage.getItem("email");
 
@@ -77,13 +78,13 @@ const Chats = () => {
   const [activeRoom, setActiveRoom] = useState();
 
   const [messages, SetChatMessages] = useState([]);
-  console.log(messages);
   const chatMessageRef = useRef();
 
   // Modals
   const [statusModal, setStatusModal] = useState(false);
   const [communityModal, setCommunityModal] = useState(false);
   const [createCommunityModal, setCreateCommunity] = useState(false);
+  const [userProfileModal, setUserProfileModal] = useState(false);
 
   //Modal Functions
   const handleStatusOpen = () => setStatusModal(true);
@@ -92,6 +93,8 @@ const Chats = () => {
   const handleCommunityClose = () => setCommunityModal(false);
   const handleCreateCommunityOpen = () => setCreateCommunity(true);
   const handleCreateCommunityClose = () => setCreateCommunity(false);
+  const handleUserProfileModalOpen = () => setUserProfileModal(true);
+  const handleUserProfileModalClose = () => setUserProfileModal(false);
 
   const FetchUserList = async () => {
     try {
@@ -192,8 +195,9 @@ const Chats = () => {
                 }}
               >
                 {userImg ? (
-                  <div>
+                  <div style={{ cursor: "pointer" }}>
                     <img
+                      onClick={() => handleUserProfileModalOpen()}
                       src={`${url}/${userImg}`}
                       style={{
                         objectFit: "cover",
@@ -201,6 +205,7 @@ const Chats = () => {
                         width: "50px",
                         borderRadius: "50px",
                       }}
+                      alt="profile"
                     />
                   </div>
                 ) : (
@@ -323,6 +328,10 @@ const Chats = () => {
       <CreateCommunityModal
         open={createCommunityModal}
         handleClose={handleCreateCommunityClose}
+      />
+      <UserProfileModal
+        open={userProfileModal}
+        handleClose={handleUserProfileModalClose}
       />
     </Box>
   );

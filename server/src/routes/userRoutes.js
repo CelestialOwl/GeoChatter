@@ -12,7 +12,15 @@ import { calculateDistance } from "../utils/geoLocation.js";
 const router = Router();
 
 router.post("/fetch-profile", markLastSeen, async (req, res) => {
-  const response = await User.findOne({ email: req.body.email });
+  const response = await User.findOne({ email: req.body.email }).select({
+    email: 1,
+    username: 1,
+    latitude: 1,
+    longitude: 1,
+    chats: 1,
+    img: 1,
+    hobbies: 1,
+  });
   res.status(200).send({ status: true, user: response });
   // User.find();
 });
@@ -35,7 +43,6 @@ router.get("/users-list", markLastSeen, async (req, res) => {
     (a) => a._id.toString() === req.user._id.toString()
   );
   const LoggedUser = user[0];
-  console.log(user[0].latitude);
   for (let i = 0; i < filteredArray.length; i++) {
     if (filteredArray[i].latitude && filteredArray[i].longitude) {
       const distance = calculateDistance(
@@ -53,7 +60,6 @@ router.get("/users-list", markLastSeen, async (req, res) => {
     parseInt(filteredArray[0].latitude),
     parseInt(filteredArray[0].longitude)
   );
-  console.log("distance of user is", distance);
   res.status(200).send({ status: true, userList: filteredArray });
 });
 
@@ -85,7 +91,6 @@ router.post("/fetch-hobbies", markLastSeen, async (req, res) => {
 });
 
 router.post("/edit-profile", upload.single("image"), async (req, res) => {
-  console.log("user body", req.body);
   try {
     const path = req.file.path;
     const convertedPath = path.replace(/\\/g, "/");

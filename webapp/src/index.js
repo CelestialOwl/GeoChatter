@@ -49,7 +49,8 @@ root.render(
       className="container-login100"
       style={
         window.location.pathname === "/login" ||
-        window.location.pathname === "/signup"
+        window.location.pathname === "/signup" ||
+        window.location.pathname === "/reset-password"
           ? { backgroundImage: "url(bg-01.jpg)" }
           : {}
       }
