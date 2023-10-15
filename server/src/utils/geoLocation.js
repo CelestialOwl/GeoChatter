@@ -23,5 +23,15 @@ export function calculateDistance(lat1, lon1, lat2, lon2) {
   // Distance in kilometers
   const distance = earthRadius * c;
 
+  console.log("user distance", distance);
+
   return distance;
 }
+
+const distance = calculateDistance(
+  31.4508233,
+  74.2647738,
+  31.4478656,
+  74.3924207
+); // Berlin to Paris
+console.log(`Distance: ${distance} kilometers`);

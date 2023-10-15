@@ -46,10 +46,10 @@ router.get("/users-list", markLastSeen, async (req, res) => {
   for (let i = 0; i < filteredArray.length; i++) {
     if (filteredArray[i].latitude && filteredArray[i].longitude) {
       const distance = calculateDistance(
-        parseInt(LoggedUser.latitude),
-        parseInt(LoggedUser.longitude),
-        parseInt(filteredArray[i].latitude),
-        parseInt(filteredArray[i].longitude)
+        parseFloat(LoggedUser.latitude),
+        parseFloat(LoggedUser.longitude),
+        parseFloat(filteredArray[i].latitude),
+        parseFloat(filteredArray[i].longitude)
       );
       filteredArray[i].distance = distance;
     }

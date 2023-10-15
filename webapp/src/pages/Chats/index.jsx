@@ -36,6 +36,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { grey, pink } from "@mui/material/colors";
 import { url } from "../../API/ChatterAPI";
 import UserProfileModal from "../../components/Modals/UserProfileModal";
+import UserListModal from "../../components/Modals/User/UserListModal";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 
 const email = localStorage.getItem("email");
 
@@ -85,10 +88,13 @@ const Chats = () => {
   const [communityModal, setCommunityModal] = useState(false);
   const [createCommunityModal, setCreateCommunity] = useState(false);
   const [userProfileModal, setUserProfileModal] = useState(false);
+  const [userListModal, setUserListModal] = useState(false);
 
   //Modal Functions
   const handleStatusOpen = () => setStatusModal(true);
   const handleStatusClose = () => setStatusModal(false);
+  const handleUserListOpen = () => setUserListModal(true);
+  const handleUserListClose = () => setUserListModal(false);
   const handleCommunityOpen = () => setCommunityModal(true);
   const handleCommunityClose = () => setCommunityModal(false);
   const handleCreateCommunityOpen = () => setCreateCommunity(true);
@@ -173,7 +179,7 @@ const Chats = () => {
           item
           xs={0}
           md={3}
-          sx={{ background: "#e8e9e99e", paddingLeft: 1.5 }}
+          sx={{ background: "#e8e9e99e", paddingLeft: 1.5, paddingTop: 1 }}
         >
           <Box sx={{ width: "100%" }} id="kappachino">
             <div
@@ -217,6 +223,12 @@ const Chats = () => {
               </div>
               <div style={{ marginTop: 5, display: "flex" }}>
                 <div
+                  onClick={handleUserListOpen}
+                  style={{ width: 45, height: 40 }}
+                >
+                  <PersonSearchIcon sx={{ cursor: "pointer" }} />
+                </div>
+                <div
                   onClick={handleStatusOpen}
                   style={{ width: 45, height: 40 }}
                 >
@@ -246,6 +258,7 @@ const Chats = () => {
                   borderRadius: "50px",
                   fontSize: 20,
                 }}
+                disableUnderline
                 id="input-with-icon-adornment"
                 endAdornment={
                   <InputAdornment position="start">
@@ -254,10 +267,15 @@ const Chats = () => {
                 }
               />
             </FormControl>
-            <UserList users={users} FetchChats={FetchChatHandler} />
+            <UserList
+              users={users}
+              FetchChats={FetchChatHandler}
+              handleUserListOpen={handleUserListOpen}
+            />
             <Communities
               setActiveRoom={handleActiveChatBox}
               communities={rooms}
+              handleCreateCommunityOpen={handleCreateCommunityOpen}
             />
           </Box>
         </Grid>
@@ -333,6 +351,7 @@ const Chats = () => {
         open={userProfileModal}
         handleClose={handleUserProfileModalClose}
       />
+      <UserListModal open={userListModal} handleClose={handleUserListClose} />
     </Box>
   );
 };
