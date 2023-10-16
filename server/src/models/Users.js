@@ -59,6 +59,9 @@ const userSchema = new mongoose.Schema({
   distance: {
     type: String,
   },
+  private: {
+    type: Boolean,
+  },
   location: locationSchema,
   hobbies: [hobbySchema],
   chats: [String],

@@ -17,6 +17,7 @@ import PhoneInput from "react-phone-input-2";
 // import "react-phone-input-2/lib/style.css";
 import "react-phone-input-2/lib/material.css";
 import { useNavigate } from "react-router-dom";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 
 const theme = createTheme({
   typography: {
@@ -26,6 +27,9 @@ const theme = createTheme({
 
 const SignUp = () => {
   const [phone, setPhone] = useState("");
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
   return (
     <div
@@ -43,15 +47,16 @@ const SignUp = () => {
       }}
     >
       <div className="pb-16 login_title">Sign Up</div>
-      <div className="form_title">Username</div>
+      <div className="form_title">Email</div>
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <FormControl className="form_generics" variant="standard">
           <Input
             id="email"
             fullWidth
+            onChange={(e) => setEmail(e.target.value)}
             startAdornment={
               <InputAdornment position="start">
-                <AccountCircle />
+                <AlternateEmailIcon />
               </InputAdornment>
             }
           />
@@ -59,10 +64,23 @@ const SignUp = () => {
         <div className="form_title">Password</div>
         <FormControl className="form_generics" variant="standard">
           <Input
+            onChange={(e) => setPassword(e.target.value)}
             id="password"
             startAdornment={
               <InputAdornment position="start">
                 <KeyOutlinedIcon />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <div className="form_title">Username</div>
+        <FormControl className="form_generics" variant="standard">
+          <Input
+            onChange={(e) => setUserName(e.target.value)}
+            id="password"
+            startAdornment={
+              <InputAdornment position="start">
+                <AccountCircle />
               </InputAdornment>
             }
           />
@@ -82,6 +100,7 @@ const SignUp = () => {
             containerStyle={{}}
             containerClass="kappachino"
             inputStyle={{
+              width: "100%",
               borderTop: "none",
               borderLeft: "none",
               borderRight: "none",

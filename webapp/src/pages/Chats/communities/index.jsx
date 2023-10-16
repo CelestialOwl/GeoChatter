@@ -10,16 +10,15 @@ const Communities = ({
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h3 style={{ color: "#0000ffa6" }}> Communities </h3>
         <div
           style={{ cursor: "pointer" }}
           onClick={() => {
             handleCreateCommunityOpen();
           }}
         >
-          <h3 style={{ color: "#0000ffa6" }}> Communities </h3>
+          <AddCircleIcon sx={{ marginTop: "7px", marginRight: "8px" }} />
         </div>
-
-        <AddCircleIcon sx={{ marginTop: "7px", marginRight: "8px" }} />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {communities.map((community) => {

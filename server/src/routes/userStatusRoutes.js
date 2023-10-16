@@ -15,7 +15,6 @@ router.post("/create-status", upload.single("image"), async (req, res) => {
       userId: req.user._id,
     });
     await status.save();
-    console.log(status);
     res.status(200).send({ status: "ok" });
   } catch (err) {
     res.status(400).send({ status: err });
@@ -23,18 +22,16 @@ router.post("/create-status", upload.single("image"), async (req, res) => {
 });
 
 router.post("/fetch-user-status", async (req, res) => {
-  console.log(req.body);
   const userId = req.body.userId;
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000); // Calculate the time 24 hours ago
 
   Status.find({
     $and: [
       // Match the specific userID
-      { time: { $gte: twentyFourHoursAgo } }, // Match records with "time" greater than or equal to 24 hours ago
+      { time: { $lte: twentyFourHoursAgo }, userId: userId }, // Match records with "time" greater than or equal to 24 hours ago
     ],
   })
     .then((results) => {
-      console.log(results);
       res.status(200).send({ status: true, status: results });
     })
     .catch((error) => {

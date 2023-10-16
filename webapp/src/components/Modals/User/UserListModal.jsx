@@ -33,7 +33,7 @@ const UserListModal = ({ open, handleClose }) => {
 
   useEffect(() => {
     FetchUserList();
-  }, []);
+  }, [open]);
 
   return (
     <Modal

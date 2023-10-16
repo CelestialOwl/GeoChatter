@@ -1,9 +1,7 @@
-import React from "react";
-import { Modal, Typography, Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Modal, Typography, Box, Grid } from "@mui/material";
 import api from "../../../API/ChatterAPI";
-import { useState } from "react";
-import { useEffect } from "react";
-import ProgressBar from "../../ProgressBar";
+import CommunityCard from "./CommunityCard/CommunityCard";
 
 const style = {
   position: "absolute",
@@ -19,6 +17,17 @@ const style = {
 };
 
 const CommunityModal = ({ open, handleClose }) => {
+  const [communities, setCommunities] = useState([]);
+
+  const fetchCommunities = async () => {
+    const response = await api.post("/get-community");
+    setCommunities(response.data.communities);
+  };
+
+  useEffect(() => {
+    fetchCommunities();
+  }, []);
+
   return (
     <Modal
       open={open}
@@ -27,7 +36,20 @@ const CommunityModal = ({ open, handleClose }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>hi</Box>
+      <Box sx={style}>
+        <Box sx={{ overflowY: "auto", height: "100%" }}>
+          <Grid container spacing={2}>
+            {communities &&
+              communities.map((room) => {
+                return (
+                  <Grid item xs={6}>
+                    <CommunityCard community={room} />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Box>
+      </Box>
     </Modal>
   );
 };

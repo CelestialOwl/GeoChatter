@@ -14,18 +14,18 @@ router.get("/tracks", async (req, res) => {
 });
 
 router.post("/save-location", async (req, res) => {
-  const { location, email } = req.body;
-  res.status(200).send({ ok: "ok" });
+  const { latitude, longitude, email } = req.body;
 
-  if (!location) {
+  if (!latitude || !longitude) {
     return res.status(422).send({ error: "You must provide a location" });
   }
   try {
     let doc = await Users.findOneAndUpdate(
       { email: email },
-      { location: location },
-      { new: true }
+      { latitude: latitude, longitude: longitude }
     );
+    res.status(200).send({ status: true, message: "location saved" });
+
     // res.send(track);
   } catch (err) {
     res.status(422).send({ error: err.message });

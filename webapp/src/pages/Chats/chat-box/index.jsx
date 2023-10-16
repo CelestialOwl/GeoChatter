@@ -2,7 +2,30 @@ import React from "react";
 import { Grid, Box } from "@mui/material";
 import ChatUser from "./chat-user";
 import ChatMessage from "./chat-user/chat-message";
-const ChatBox = ({ messages }) => {
+import Empty from "/";
+const ChatBox = ({ messages, loading }) => {
+  if (loading) {
+    return null;
+  }
+  if (messages.length === 0) {
+    return (
+      <div style={{ height: "100%", position: "relative" }}>
+        <div
+          style={{
+            margin: 0,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            opacity: 0.6,
+          }}
+        >
+          <img src="/empty.png" height={"170px"} width={"170px"} />
+          <h3 style={{ opacity: 0.4 }}>Nothing Found</h3>
+        </div>
+      </div>
+    );
+  }
   return (
     <div
       style={{

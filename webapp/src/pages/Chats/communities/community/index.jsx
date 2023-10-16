@@ -37,6 +37,7 @@ const Community = ({ room, setActiveRoom }) => {
           flexGrow: 1,
           flexDirection: "column",
           marginLeft: 10,
+          maxWidth: "100%",
         }}
       >
         <div
@@ -47,9 +48,20 @@ const Community = ({ room, setActiveRoom }) => {
           }}
         >
           <h5 style={{ flexGrow: 2 }}>{room.name}</h5>
-          <span style={{ paddingRight: 10 }}>18:13</span>
         </div>
-        <p style={{ fontSize: "0.8rem" }}>Greate game</p>
+        <div style={{ position: "relative", width: "100%" }}>
+          <p
+            style={{
+              width: "230px",
+              fontSize: "0.8rem",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {room.description}
+          </p>
+        </div>
       </div>
     </div>
   );

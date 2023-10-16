@@ -70,7 +70,7 @@ const CommunityHeader = ({ activeRoom }) => {
       </div>
       <div style={{ marginTop: 5 }}>
         {/* <div style={{ width: 45, height: 40, cursor: "pointer" }}>hi</div> */}
-        <MemberListDrawser users={activeRoom.users} />
+        <MemberListDrawser users={activeRoom.users} activeRoom={activeRoom} />
       </div>
     </div>
   );

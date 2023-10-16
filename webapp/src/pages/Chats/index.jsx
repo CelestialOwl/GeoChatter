@@ -73,7 +73,7 @@ const Chats = () => {
   const [users, setUsers] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [openChat, setOpenChat] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [chatId, setRoomId] = useState();
   const [activeUser, setActiveUser] = useState();
 
@@ -132,6 +132,7 @@ const Chats = () => {
   };
 
   const FetchChatHandler = async (id) => {
+    setLoading(true);
     const res = await api.post("/create-room", { recipient: { _id: id } });
     if (res.data.message === "chat already exist!") {
       setActiveUser(res.data.user);
@@ -141,12 +142,38 @@ const Chats = () => {
       });
       SetChatMessages(chats.data);
     }
+    setLoading(false);
   };
 
   const fetchCommunities = async () => {
     const response = await api.post("/get-community");
     setRooms(response.data.communities);
   };
+
+  function getUserLocation() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async function (position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+          const formData = {
+            email: localStorage.getItem("email"),
+            latitude,
+            longitude,
+          };
+          const response = await api.post("/save-location", formData);
+          console.log(response);
+          // You can perform further actions with the user's location here.
+        },
+        function (error) {
+          console.error(`Error getting location: ${error.message}`);
+        }
+      );
+    } else {
+      console.log("Geolocation is not available in this browser.");
+    }
+  }
 
   useEffect(() => {
     SocketServices.connect("http://localhost:3003");
@@ -165,6 +192,9 @@ const Chats = () => {
     };
   }, [socket, messages]);
   useEffect(() => {
+    if (localStorage.getItem("jwt")) {
+      getUserLocation();
+    }
     FetchUserList();
     fetchCommunities();
   }, []);
@@ -235,7 +265,7 @@ const Chats = () => {
                   <CameraAltIcon sx={{ cursor: "pointer" }} />
                 </div>
                 <div
-                  onClick={handleCreateCommunityOpen}
+                  onClick={handleCommunityOpen}
                   style={{ width: 45, height: 40, cursor: "pointer" }}
                 >
                   <GroupsIcon />
@@ -293,7 +323,7 @@ const Chats = () => {
 
           <div style={{}}>
             <div className="main-chat-box" style={{}}>
-              <ChatBox messages={messages} />
+              <ChatBox messages={messages} loading={loading} />
             </div>
             <Divider sx={{ borderColor: "rgba(0, 0, 0, 0.62)" }} />
             <Box sx={{ width: "100%", display: "flex" }}>

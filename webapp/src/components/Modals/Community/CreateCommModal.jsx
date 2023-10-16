@@ -36,6 +36,9 @@ const CreateCommunityModal = ({ open, handleClose }) => {
     };
     const response = await api.post("/create-community", formData);
     if (response.status) {
+      setType("");
+      setName("");
+      setDescription("");
       handleClose();
     }
   };

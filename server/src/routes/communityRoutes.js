@@ -79,11 +79,9 @@ router.post("/get-community", requireAuth, async (req, res) => {
           return;
         }
         const filterUser = (user, communityUser) => {
-          console.log(user, communityUser, "good");
           const userDetail = communityUser.find(
             (u) => u._id.toString() === user.userId.toString()
           );
-          console.log("uyser response", userDetail);
           if (userDetail) {
             return userDetail;
           } else {
@@ -145,10 +143,11 @@ router.post("/demote-user", requireAuth, async (req, res) => {
 });
 
 router.post("/promote-user", requireAuth, async (req, res) => {
+  console.log(req.body);
   Community.findOneAndUpdate(
     {
       _id: req.body.CommunityId,
-      "users._id": req.body.userId,
+      "users.userId": req.body.userId,
     },
     {
       $set: { "users.$.is_mod": true },
@@ -172,7 +171,7 @@ router.post("/promote-user", requireAuth, async (req, res) => {
 router.post("/remove-user", async (req, res) => {
   Community.findOneAndUpdate(
     { _id: req.body.CommunityId },
-    { $pull: { users: { _id: req.body.userId } } },
+    { $pull: { users: { userId: req.body.userId } } },
     { new: true },
     (err, updatedRoom) => {
       if (err) {
@@ -190,10 +189,11 @@ router.post("/remove-user", async (req, res) => {
 });
 
 router.post("/add-user", requireAuth, async (req, res) => {
+  console.log(req.body.CommunityId, req.body.userId);
   Community.findOneAndUpdate(
     { _id: req.body.CommunityId },
-    { $addToSet: { users: { _id: req.body.userId, is_mod: false } } },
-    { new: true },
+    { $addToSet: { users: { userId: req.body.userId, is_mod: false } } },
+    { new: false },
     (err, updatedRoom) => {
       if (err) {
         console.error(err);
