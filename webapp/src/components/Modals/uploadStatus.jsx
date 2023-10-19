@@ -20,6 +20,8 @@ const style = {
 
 const UploadStatusModal = ({ open, handleClose }) => {
   const [image, setImage] = useState();
+  const localData = localStorage.getItem("profile");
+  const parsedData = JSON.parse(localData);
 
   const uploadImageHandler = async (e) => {
     const formdata = new FormData();
@@ -34,7 +36,7 @@ const UploadStatusModal = ({ open, handleClose }) => {
 
   const getStatusById = async (e) => {
     const res = await api.post("/fetch-user-status", {
-      userId: "64330c80429ee41dd7149944",
+      userId: parsedData._id,
     });
     setImage(`http://localhost:3003/${res.data.status[0].image}`);
   };
@@ -55,9 +57,9 @@ const UploadStatusModal = ({ open, handleClose }) => {
     >
       <Box sx={style}>
         <ProgressBar handleClose={handleClose} />
-        <Box sx={{ marginTop: 20 }}>
+        <Box sx={{ marginTop: 3 }}>
           {image && <img src={image} width="100%" />}
-          <input type="file" onChange={uploadImageHandler} />
+          {/* <input type="file" onChange={uploadImageHandler} /> */}
         </Box>
       </Box>
     </Modal>

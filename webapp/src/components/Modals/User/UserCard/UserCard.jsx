@@ -27,6 +27,11 @@ export default function UserCard({ user }) {
         <Typography variant="body2" color="text.secondary">
           {`${Math.floor(user.distance)} Km away`}
         </Typography>
+        <CardActions>
+          <Button sx={{ textAlign: "left" }} size="small">
+            Send Message
+          </Button>
+        </CardActions>
       </CardContent>
     </Card>
   );

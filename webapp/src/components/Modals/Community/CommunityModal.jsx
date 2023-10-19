@@ -38,6 +38,7 @@ const CommunityModal = ({ open, handleClose }) => {
     >
       <Box sx={style}>
         <Box sx={{ overflowY: "auto", height: "100%" }}>
+          <h4>Communities</h4>
           <Grid container spacing={2}>
             {communities &&
               communities.map((room) => {

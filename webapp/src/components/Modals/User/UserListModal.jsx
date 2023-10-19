@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Typography, Box } from "@mui/material";
+import { Modal, Typography, Box, Grid } from "@mui/material";
 import api from "../../../API/ChatterAPI";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 500,
-  height: "100%",
+  height: "60%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -45,10 +45,17 @@ const UserListModal = ({ open, handleClose }) => {
     >
       <Box sx={style}>
         <Box sx={{ overflowY: "auto" }}>
-          {UserList &&
-            UserList.map((user) => {
-              return <UserCard user={user} />;
-            })}
+          <h4>Users</h4>
+          <Grid container>
+            {UserList &&
+              UserList.map((user) => {
+                return (
+                  <Grid item xs={6}>
+                    <UserCard user={user} />
+                  </Grid>
+                );
+              })}
+          </Grid>
         </Box>
       </Box>
     </Modal>
