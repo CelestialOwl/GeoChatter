@@ -38,6 +38,7 @@ const router = createBrowserRouter([
     path: "/maps",
     element: <Maps />,
   },
+  { path: "/admin", element: <Maps /> },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
