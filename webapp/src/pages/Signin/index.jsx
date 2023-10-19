@@ -34,7 +34,11 @@ const Signin = () => {
       const res = await ChatterApi.post("/signin", { email, password });
       localStorage.setItem("jwt", res.data.token);
       localStorage.setItem("email", email);
-      const userProfile = await ChatterApi.post("/fetch-profile", { email });
+      const userProfile = await ChatterApi.post(
+        "/fetch-profile",
+        { email },
+        { headers: { Authorization: `Bearer ${res.data.token}` } }
+      );
       localStorage.setItem("username", userProfile.data.user.username);
       localStorage.setItem("profile", JSON.stringify(userProfile.data.user));
       window.location.href = "/chats";

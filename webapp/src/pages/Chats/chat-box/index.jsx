@@ -3,7 +3,7 @@ import { Grid, Box } from "@mui/material";
 import ChatUser from "./chat-user";
 import ChatMessage from "./chat-user/chat-message";
 import Empty from "/";
-const ChatBox = ({ messages, loading }) => {
+const ChatBox = ({ messages, loading, activeUser }) => {
   if (loading) {
     return null;
   }
@@ -38,7 +38,7 @@ const ChatBox = ({ messages, loading }) => {
       {messages.map((m, i) => {
         return (
           <div key={i}>
-            <ChatUser name={m.username} />
+            <ChatUser activeUser={activeUser} name={m.username} />
             <ChatMessage message={m.text} time={m.time} />
           </div>
         );

@@ -17,7 +17,10 @@ const Communities = ({
             handleCreateCommunityOpen();
           }}
         >
-          <AddCircleIcon sx={{ marginTop: "7px", marginRight: "8px" }} />
+          <AddCircleIcon
+            fontSize="small"
+            sx={{ marginTop: "7px", marginRight: "15px" }}
+          />
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>

@@ -3,7 +3,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { grey } from "@mui/material/colors";
 import { url } from "../../../../API/ChatterAPI";
 
-const ChatUser = ({ name }) => {
+const ChatUser = ({ name, activeUser }) => {
   let userImg;
   const localData = localStorage.getItem("profile");
   if (localData) {
@@ -24,6 +24,18 @@ const ChatUser = ({ name }) => {
           <div>
             <img
               src={`${url}/${userImg}`}
+              style={{
+                objectFit: "cover",
+                height: "40px",
+                width: "40px",
+                borderRadius: "40px",
+              }}
+            />
+          </div>
+        ) : activeUser?.img ? (
+          <div>
+            <img
+              src={`${url}/${activeUser?.img}`}
               style={{
                 objectFit: "cover",
                 height: "40px",

@@ -7,7 +7,6 @@ const instance = axios.create({
 });
 
 const jsonToken = localStorage.getItem("jwt");
-console.log(jsonToken);
 
 instance.interceptors.request.use(
   async (config) => {

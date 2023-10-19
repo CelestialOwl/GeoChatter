@@ -28,7 +28,7 @@ export default function MemberListDrawser({ users, activeRoom }) {
     const loggedinUser = users.find(
       (e) => e.details._id.toString() === parsedData._id.toString()
     );
-    setIsMod(loggedinUser.is_mod);
+    setIsMod(loggedinUser?.is_mod);
   };
 
   React.useEffect(() => {

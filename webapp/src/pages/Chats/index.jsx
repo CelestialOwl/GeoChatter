@@ -39,6 +39,7 @@ import UserProfileModal from "../../components/Modals/UserProfileModal";
 import UserListModal from "../../components/Modals/User/UserListModal";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import useFetchProfile from "../../hooks/useFetchProfile";
 
 const email = localStorage.getItem("email");
 
@@ -60,6 +61,7 @@ const Chats = () => {
   const navigate = useNavigate();
 
   const [socket, setSocket] = useState(null);
+  const userData = useFetchProfile();
 
   useEffect(() => {
     const newSocket = io(socketURL);
@@ -156,7 +158,6 @@ const Chats = () => {
         async function (position) {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
           const formData = {
             email: localStorage.getItem("email"),
             latitude,
@@ -230,11 +231,11 @@ const Chats = () => {
                   // paddingBottom: 10,
                 }}
               >
-                {userImg ? (
+                {userData?.img ? (
                   <div style={{ cursor: "pointer" }}>
                     <img
                       onClick={() => handleUserProfileModalOpen()}
-                      src={`${url}/${userImg}`}
+                      src={`${url}/${userData?.img}`}
                       style={{
                         objectFit: "cover",
                         height: "50px",
@@ -271,7 +272,7 @@ const Chats = () => {
                   <GroupsIcon />
                 </div>
                 <div style={{ width: 45, height: 40, cursor: "pointer" }}>
-                  <BasicMenu />
+                  <BasicMenu handleProfile={handleUserProfileModalOpen} />
                 </div>
               </div>
             </div>
@@ -323,7 +324,11 @@ const Chats = () => {
 
           <div style={{}}>
             <div className="main-chat-box" style={{}}>
-              <ChatBox messages={messages} loading={loading} />
+              <ChatBox
+                activeUser={activeUser}
+                messages={messages}
+                loading={loading}
+              />
             </div>
             <Divider sx={{ borderColor: "rgba(0, 0, 0, 0.62)" }} />
             <Box sx={{ width: "100%", display: "flex" }}>

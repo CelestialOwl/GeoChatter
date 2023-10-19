@@ -5,22 +5,17 @@ import MenuItem from "@mui/material/MenuItem";
 import { MoreVert } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { colors } from "@mui/material";
+import { red } from "@mui/material/colors";
+import BlockIcon from "@mui/icons-material/Block";
 
-export default function BasicMenu({ handleProfile }) {
+export default function ChatHeaderDropDown({}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
-    // navigate("/login");
   };
 
   return (
@@ -44,16 +39,10 @@ export default function BasicMenu({ handleProfile }) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            handleProfile();
-          }}
-        >
-          Update Profile
+        <MenuItem onClick={handleClose} sx={{ color: red[500], padding: 2 }}>
+          <BlockIcon sx={{ color: red[500] }} />
+          Block User
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Manage Status</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );

@@ -6,6 +6,7 @@ import { red, grey } from "@mui/material/colors";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import locationModal from "../../../components/Modals/LocationModal";
 import { url } from "../../../API/ChatterAPI";
+import ChatHeaderDropDown from "../../../components/chats/ChatHeaderDropdown";
 
 const ChatHeader = ({ activeUser }) => {
   console.log(activeUser);
@@ -64,36 +65,7 @@ const ChatHeader = ({ activeUser }) => {
       </div>
       <div style={{ marginTop: 5 }}>
         <div style={{ width: 45, height: 40, cursor: "pointer" }}>
-          <div className="dropdown" onClick={() => setDropdown(!dropdown)}>
-            <MoreVert />
-            {dropdown && (
-              <div>
-                <div className="dropdown-content" style={{ cursor: "pointer" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 50,
-                    }}
-                  >
-                    <div>
-                      <BlockIcon sx={{ color: red[500] }} />
-                      <span style={{ padding: 8, color: red[500] }}>
-                        Block User
-                      </span>
-                    </div>
-                    <div onClick={() => console.log("hi there")}>
-                      <AddLocationAltIcon sx={{ color: grey[500] }} />
-
-                      <span style={{ marginTop: 35, padding: 8 }}>
-                        Location
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <ChatHeaderDropDown />
         </div>
       </div>
     </div>

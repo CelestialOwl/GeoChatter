@@ -51,11 +51,11 @@ const User = ({ userData, FetchChats }) => {
         >
           <h5 style={{ flexGrow: 2 }}>{userData.username}</h5>
           <span style={{ paddingRight: 10 }}>
-            {Math.floor(Math.random() * (24 - 1)) + 1}:
-            {Math.floor(Math.random() * (60 - 1)) + 1}
+            {/* {Math.floor(Math.random() * (24 - 1)) + 1}:
+            {Math.floor(Math.random() * (60 - 1)) + 1} */}
           </span>
         </div>
-        <p style={{ fontSize: "0.8rem" }}>Hi there how are you?</p>
+        <p style={{ fontSize: "0.8rem" }}></p>
       </div>
     </div>
   );

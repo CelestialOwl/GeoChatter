@@ -50,9 +50,8 @@ export default function BasicMenu({ handleProfile }) {
             handleProfile();
           }}
         >
-          Update Profile
+          Profile
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Manage Status</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

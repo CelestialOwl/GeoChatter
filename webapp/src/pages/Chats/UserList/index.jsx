@@ -8,7 +8,10 @@ const UserList = ({ users, FetchChats, handleUserListOpen }) => {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h3 style={{ color: "#0000ffa6" }}> Messages </h3>
         <div onClick={() => handleUserListOpen()} style={{ cursor: "pointer" }}>
-          <AddCircleIcon sx={{ marginTop: "7px", marginRight: "8px" }} />
+          <AddCircleIcon
+            fontSize="small"
+            sx={{ marginTop: "7px", marginRight: "10px" }}
+          />
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>

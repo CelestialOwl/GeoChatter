@@ -4,6 +4,8 @@ import { useState } from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Api from "../../API/ChatterAPI";
 import { url } from "../../API/ChatterAPI";
+import { UserData } from "../../utils/userData";
+import { SaveLocalUpdateData } from "../../hooks/saveUpdateData";
 
 const style = {
   position: "absolute",
@@ -22,8 +24,18 @@ const UserProfileModal = ({ open, handleClose }) => {
   const [userName, setUserName] = useState();
   const [userIcon, setUserIcon] = useState();
 
-  const uploadUserImageHandler = (e) => {
+  const uploadUserImageHandler = async (e) => {
     const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("email", UserData().email);
+    try {
+      const response = await Api.post("/edit-profile", formData);
+      console.log(response, "profile");
+      SaveLocalUpdateData();
+    } catch (err) {
+      console.log(err);
+    }
     if (file) {
       const reader = new FileReader();
 
@@ -66,22 +78,19 @@ const UserProfileModal = ({ open, handleClose }) => {
           label="Username"
           variant="outlined"
         />
-        <label htmlFor="image-upload">
-          <input
-            id="image-upload"
-            style={{
-              background: "white",
-              color: "black",
-              border: "1px solid black",
-              padding: 10,
-              fontSize: 14,
-              borderRadius: 10,
-            }}
-            type="file"
-            onChange={uploadUserImageHandler}
-          />
-          Upload{" "}
-        </label>
+        <input
+          id="image-upload"
+          style={{
+            background: "white",
+            color: "black",
+            border: "1px solid black",
+            padding: 10,
+            fontSize: 14,
+            borderRadius: 10,
+          }}
+          type="file"
+          onChange={uploadUserImageHandler}
+        />
         {userIcon && (
           <img
             height={"30px"}
