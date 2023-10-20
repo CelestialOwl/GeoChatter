@@ -12,7 +12,7 @@ const app = express();
 const httpserver = http.createServer(app);
 let io = new Server(httpserver, {
   cors: {
-    origin: "https://server-1xg2.onrender.com",
+    origin: "https://geo-chatter.vercel.app",
     methods: ["GET", "POST"],
   },
 });
