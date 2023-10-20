@@ -41,7 +41,11 @@ const Signin = () => {
       );
       localStorage.setItem("username", userProfile.data.user.username);
       localStorage.setItem("profile", JSON.stringify(userProfile.data.user));
-      window.location.href = "/chats";
+      if (userProfile.data.user.super_admin) {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/chats";
+      }
     } catch (err) {}
   }
   return (

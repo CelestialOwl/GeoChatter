@@ -12,6 +12,7 @@ import { Container } from "@mui/material";
 import { CssBaseline } from "@mui/material";
 import SignUp from "./pages/Signup";
 import Maps from "./components/maps";
+import AdminTable from "./pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
     path: "/maps",
     element: <Maps />,
   },
-  { path: "/admin", element: <Maps /> },
+  { path: "/admin", element: <AdminTable /> },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

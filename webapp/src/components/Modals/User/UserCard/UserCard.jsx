@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { url } from "../../../../API/ChatterAPI";
 
-export default function UserCard({ user }) {
+export default function UserCard({ user, chatMessageHandler }) {
   return (
     <Card sx={{ maxWidth: 345, margin: 3 }}>
       <CardMedia
@@ -28,7 +28,11 @@ export default function UserCard({ user }) {
           {`${Math.floor(user.distance)} Km away`}
         </Typography>
         <CardActions>
-          <Button sx={{ textAlign: "left" }} size="small">
+          <Button
+            onClick={() => chatMessageHandler(user._id)}
+            sx={{ textAlign: "left" }}
+            size="small"
+          >
             Send Message
           </Button>
         </CardActions>

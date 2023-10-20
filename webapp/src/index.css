@@ -63,3 +63,6 @@
 .dropdown-content:hover {
   background-color: #e2e2e2;
 }
+.admin-tabs > div > div {
+  justify-content: center;
+}

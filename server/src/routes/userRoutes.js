@@ -20,13 +20,14 @@ router.post("/fetch-profile", markLastSeen, async (req, res) => {
     chats: 1,
     img: 1,
     hobbies: 1,
+    super_admin: 1,
   });
   res.status(200).send({ status: true, user: response });
   // User.find();
 });
 
 router.get("/users-list", markLastSeen, async (req, res) => {
-  const response = await User.find({})
+  const response = await User.find({ super_admin: { $exists: false } })
     .select({
       email: 1,
       username: 1,
@@ -34,6 +35,7 @@ router.get("/users-list", markLastSeen, async (req, res) => {
       longitude: 1,
       chats: 1,
       img: 1,
+      super_admin: 1,
     })
     .exec();
   const filteredArray = response.filter(
@@ -43,6 +45,11 @@ router.get("/users-list", markLastSeen, async (req, res) => {
     (a) => a._id.toString() === req.user._id.toString()
   );
   const LoggedUser = user[0];
+  console.log(LoggedUser);
+  if (!LoggedUser) {
+    res.status(200).send({ status: true, userList: filteredArray });
+    return null;
+  }
   for (let i = 0; i < filteredArray.length; i++) {
     if (filteredArray[i].latitude && filteredArray[i].longitude) {
       const distance = calculateDistance(
@@ -55,10 +62,10 @@ router.get("/users-list", markLastSeen, async (req, res) => {
     }
   }
   const distance = calculateDistance(
-    parseInt(user[0].latitude),
-    parseInt(user[0].longitude),
-    parseInt(filteredArray[0].latitude),
-    parseInt(filteredArray[0].longitude)
+    parseInt(user[0]?.latitude),
+    parseInt(user[0]?.longitude),
+    parseInt(filteredArray[0]?.latitude),
+    parseInt(filteredArray[0]?.longitude)
   );
   res.status(200).send({ status: true, userList: filteredArray });
 });

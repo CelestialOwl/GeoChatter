@@ -62,6 +62,9 @@ const userSchema = new mongoose.Schema({
   private: {
     type: Boolean,
   },
+  super_admin: {
+    type: Boolean,
+  },
   location: locationSchema,
   hobbies: [hobbySchema],
   chats: [String],

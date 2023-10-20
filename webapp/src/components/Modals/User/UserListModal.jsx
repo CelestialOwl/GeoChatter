@@ -10,7 +10,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: 700,
   height: "60%",
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -31,6 +31,12 @@ const UserListModal = ({ open, handleClose }) => {
     }
   };
 
+  const FetchChatHandler = async (id) => {
+    const res = await api.post("/create-room", { recipient: { _id: id } });
+    if (res.data.message === "chat already exist!") {
+    }
+  };
+
   useEffect(() => {
     FetchUserList();
   }, [open]);
@@ -44,14 +50,17 @@ const UserListModal = ({ open, handleClose }) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Box sx={{ overflowY: "auto" }}>
+        <Box sx={{ overflowY: "auto", height: "100%" }}>
           <h4>Users</h4>
           <Grid container>
             {UserList &&
               UserList.map((user) => {
                 return (
                   <Grid item xs={6}>
-                    <UserCard user={user} />
+                    <UserCard
+                      chatMessageHandler={FetchChatHandler}
+                      user={user}
+                    />
                   </Grid>
                 );
               })}

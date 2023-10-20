@@ -201,6 +201,17 @@ const Chats = () => {
   }, []);
 
   useEffect(() => {
+    FetchUserList();
+    fetchCommunities();
+  }, [
+    statusModal,
+    communityModal,
+    createCommunityModal,
+    userProfileModal,
+    userListModal,
+  ]);
+
+  useEffect(() => {
     SetChatMessages([]);
   }, [activeRoom, activeUser]);
   return (

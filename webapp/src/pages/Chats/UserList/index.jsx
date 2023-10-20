@@ -1,8 +1,11 @@
 import React from "react";
 import User from "./user";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import useFetchProfile from "../../../hooks/useFetchProfile";
 
 const UserList = ({ users, FetchChats, handleUserListOpen }) => {
+  const userProfile = useFetchProfile();
+  console.log(userProfile);
   return (
     <div style={{ padding: 8 }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -16,7 +19,11 @@ const UserList = ({ users, FetchChats, handleUserListOpen }) => {
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {users.map((u) => {
-          return <User FetchChats={FetchChats} key={u._id} userData={u} />;
+          if (userProfile.chats.includes(u._id.toString())) {
+            return <User FetchChats={FetchChats} key={u._id} userData={u} />;
+          } else {
+            return null;
+          }
         })}
       </div>
     </div>

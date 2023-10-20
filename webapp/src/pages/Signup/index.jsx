@@ -18,6 +18,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
 import { useNavigate } from "react-router-dom";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import Api from "../../API/ChatterAPI";
 
 const theme = createTheme({
   typography: {
@@ -31,6 +32,23 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  const handleSignUp = async () => {
+    console.log(phone, username, password, email);
+    const formData = {
+      email: email,
+      password: password,
+      username: username,
+      phone: phone,
+    };
+    try {
+      const response = await Api.post("/signup", formData);
+      console.log(response, "response");
+      if (response.status === 200) {
+        navigate("/login");
+      }
+    } catch (err) {}
+  };
   return (
     <div
       className="p-16"
@@ -66,6 +84,7 @@ const SignUp = () => {
           <Input
             onChange={(e) => setPassword(e.target.value)}
             id="password"
+            type="password"
             startAdornment={
               <InputAdornment position="start">
                 <KeyOutlinedIcon />
@@ -114,7 +133,9 @@ const SignUp = () => {
           {/* </Input> */}
         </FormControl>
       </Box>
-      <Button className="form_button_submit">Sign up</Button>
+      <Button onClick={() => handleSignUp()} className="form_button_submit">
+        Sign up
+      </Button>
       <div className="text-center pt-12 pb-8">
         Already have an account?{" "}
         <span
