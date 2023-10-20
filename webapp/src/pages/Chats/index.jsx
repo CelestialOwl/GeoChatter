@@ -40,7 +40,6 @@ import UserListModal from "../../components/Modals/User/UserListModal";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import useFetchProfile from "../../hooks/useFetchProfile";
-import { url } from "../../API/ChatterAPI";
 
 const email = localStorage.getItem("email");
 
