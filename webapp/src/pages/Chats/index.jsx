@@ -40,6 +40,7 @@ import UserListModal from "../../components/Modals/User/UserListModal";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import useFetchProfile from "../../hooks/useFetchProfile";
+import { url } from "../../API/ChatterAPI";
 
 const email = localStorage.getItem("email");
 
@@ -57,7 +58,7 @@ if (localData) {
 }
 
 const Chats = () => {
-  const socketURL = "http://localhost:3003";
+  const socketURL = url;
   const navigate = useNavigate();
 
   const [socket, setSocket] = useState(null);
@@ -177,7 +178,7 @@ const Chats = () => {
   }
 
   useEffect(() => {
-    SocketServices.connect("http://localhost:3003");
+    SocketServices.connect(url);
 
     const socket = SocketServices.getSocket();
 

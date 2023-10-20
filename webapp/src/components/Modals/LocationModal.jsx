@@ -4,6 +4,7 @@ import api from "../../API/ChatterAPI";
 import { useState } from "react";
 import { useEffect } from "react";
 import ProgressBar from "../ProgressBar";
+import { url } from "../../API/ChatterAPI";
 
 const style = {
   position: "absolute",
@@ -36,7 +37,7 @@ const UploadStatusModal = ({ open, handleClose }) => {
     const res = await api.post("/fetch-user-status", {
       userId: "64330c80429ee41dd7149944",
     });
-    setImage(`http://localhost:3003/${res.data.status[0].image}`);
+    setImage(`${url}/${res.data.status[0].image}`);
   };
 
   useEffect(() => {

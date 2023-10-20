@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const url = "http://localhost:3003";
+export const url = "https://server-1xg2.onrender.com";
 
 const instance = axios.create({
   baseURL: url,

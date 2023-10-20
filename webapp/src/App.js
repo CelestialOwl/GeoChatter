@@ -2,7 +2,6 @@ import "./App.css";
 import { io } from "socket.io-client";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-const socket = io("http://localhost:3003");
 
 function App() {
   const navigate = useNavigate();
