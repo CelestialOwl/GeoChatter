@@ -12,7 +12,7 @@ const app = express();
 const httpserver = http.createServer(app);
 let io = new Server(httpserver, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://server-1xg2.onrender.com",
     methods: ["GET", "POST"],
   },
 });
