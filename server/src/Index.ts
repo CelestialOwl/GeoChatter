@@ -14,7 +14,7 @@ import { io } from "./utils/socket.js";
 import * as dotenv from "dotenv";
 import cors from "cors";
 dotenv.config();
-
+console.log("old");
 const mongoUri = process.env.MONGO_LOCAL_URL;
 const app = express();
 const httpserver = createServer(app);

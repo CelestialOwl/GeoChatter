@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "nodemon src/Index.js",
     "start": "node src/Index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "npx nodemon",
+    "build": "rimraf ./build && tsc",
+    "startTS": "npm run build && node build/index.js",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -25,5 +29,12 @@
     "nodemon": "^2.0.15",
     "socket.io": "^4.5.4"
   },
-  "type": "module"
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.2"
+  }
 }
