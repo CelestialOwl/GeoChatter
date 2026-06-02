@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Poppins-Bold;
+  src: url("./fonts/Poppins-Bold.ttf");
+}
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url("./fonts/Poppins-Regular.ttf");
+}
+
+.container-login100 {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.chat-user-primary {
+  color: #0a910a;
+}
+
+.chat-user-secondary {
+  color: #a523cf;
+}
+
+.chat-message {
+  color: black;
+  font-size: 14px;
+}
+.chat-message-time {
+  font-size: 13px;
+  color: black;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+.dropdown-content:hover {
+  background-color: #e2e2e2;
+}
+.admin-tabs > div > div {
+  justify-content: center;
+}

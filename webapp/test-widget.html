@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeoChatter Widget Test</title>
+  <style>
+    /* Host app styles — these should NOT affect the widget */
+    body {
+      font-family: "Comic Sans MS", cursive;
+      background: #f0f0f0;
+      color: red;
+      padding: 20px;
+    }
+    h1 { color: green; }
+    input { border: 5px solid orange !important; }
+
+    .widget-container {
+      width: 100%;
+      max-width: 900px;
+      height: 600px;
+      margin: 20px auto;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>Host Application</h1>
+  <p>This page has intentionally garish styles to verify the widget is isolated via Shadow DOM.</p>
+  <p>The widget below should look completely normal regardless of the red text, Comic Sans, etc.</p>
+
+  <div class="widget-container">
+    <geochatter-widget
+      token="YOUR_JWT_TOKEN_HERE"
+      api-url="http://localhost:3003"
+      email="test@example.com"
+      theme="light"
+    ></geochatter-widget>
+  </div>
+
+  <h2>Controls</h2>
+  <button onclick="toggleTheme()">Toggle Dark Mode</button>
+  <button onclick="changeToken()">Simulate Token Change</button>
+
+  <script type="module" src="./dist-widget/geochatter-widget.es.js"></script>
+  <script>
+    function toggleTheme() {
+      const el = document.querySelector("geochatter-widget");
+      const current = el.getAttribute("theme");
+      el.setAttribute("theme", current === "dark" ? "light" : "dark");
+    }
+    function changeToken() {
+      const el = document.querySelector("geochatter-widget");
+      el.setAttribute("token", "new-token-" + Date.now());
+      console.log("Token updated — widget should re-render");
+    }
+
+    // Listen for auth errors from the widget
+    document.querySelector("geochatter-widget").addEventListener("auth-error", () => {
+      console.warn("Widget reported auth error — host should re-authenticate");
+    });
+  </script>
+</body>
+</html>

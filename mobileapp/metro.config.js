@@ -1,15 +1,6 @@
-const { getDefaultConfig } = require("metro-config");
+const { getDefaultConfig } = require("expo/metro-config");
+const { withNativeWind } = require("nativewind/metro");
 
-module.exports = (async () => {
-  const {
-    resolver: { sourceExts },
-  } = await getDefaultConfig();
-  return {
-    transformer: {
-      babelTransformerPath: require.resolve("./transformer.js"),
-    },
-    resolver: {
-      sourceExts: [...sourceExts, "scss", "sass"],
-    },
-  };
-})();
+const config = getDefaultConfig(__dirname);
+
+module.exports = withNativeWind(config, { input: "./src/styles/global.css" });

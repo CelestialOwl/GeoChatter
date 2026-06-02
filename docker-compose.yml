@@ -1,0 +1,33 @@
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build: ./server
+    ports:
+      - "3003:3003"
+    environment:
+      - MONGO_LOCAL_URL=mongodb://mongodb:27017/geochatter
+      - JWT_SECRET=dev-secret-key-at-least-32-characters-long
+      - PORT=3003
+      - NODE_ENV=development
+      - CORS_ORIGIN=*
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./server/src:/app/src
+      - ./server/uploads:/app/uploads
+    command: npx tsx watch src/Index.ts
+
+volumes:
+  mongo-data:
